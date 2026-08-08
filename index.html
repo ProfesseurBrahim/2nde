@@ -3,9 +3,10 @@
 <head>
 <meta charset="utf-8"/>
 <title>Mathématiques — Seconde | M. Brahim</title>
+<link rel="icon" type="image/png" href="logo.png"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <style>
- 
+
 /* ============================================================
    VARIABLES — palette Seconde
    ============================================================ */
@@ -30,8 +31,7 @@ html{ scroll-behavior:smooth; }
 #section-progression,
 #section-transversale,
 #section-annexes,
-#section-ressources,
-#site-footer{
+#section-ressources{
   scroll-margin-top:64px;
 }
 
@@ -166,6 +166,69 @@ body::before{
 }
 .nav-link-active:hover{ background:var(--accent); }
 
+/* Dropdown pour 1ère / Term */
+.nav-grade-dropdown{
+  position:relative;
+}
+.nav-grade-dropdown > .nav-link{
+  cursor:pointer;
+}
+/* comble l'espace entre le bouton et le menu pour ne pas perdre le hover */
+.nav-grade-dropdown::after{
+  content:"";
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  height:12px;
+}
+.nav-grade-menu{
+  position:absolute;
+  top:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%) translateY(-6px);
+  min-width:150px;
+  background:#0b1524;
+  border:1px solid var(--line);
+  border-radius:10px;
+  padding:6px;
+  display:flex;
+  flex-direction:column;
+  gap:2px;
+  box-shadow:0 12px 28px rgba(0,0,0,0.35);
+  opacity:0;
+  visibility:hidden;
+  pointer-events:none;
+  transition:opacity 0.18s ease, transform 0.18s ease, visibility 0s linear 0.35s;
+  transition-delay:0s, 0s, 0.35s;
+  z-index:200;
+}
+.nav-grade-dropdown:hover .nav-grade-menu,
+.nav-grade-dropdown:focus-within .nav-grade-menu{
+  opacity:1;
+  visibility:visible;
+  pointer-events:auto;
+  transform:translateX(-50%) translateY(0);
+  transition:opacity 0.18s ease, transform 0.18s ease, visibility 0s;
+}
+.nav-grade-menu a{
+  display:flex;
+  align-items:center;
+  height:30px;
+  padding:0 10px;
+  border-radius:7px;
+  font-size:0.72rem;
+  font-weight:600;
+  color:var(--grey);
+  text-decoration:none;
+  white-space:nowrap;
+  transition:background 0.2s, color 0.2s;
+}
+.nav-grade-menu a:hover{
+  background:rgba(0,163,255,0.14);
+  color:var(--white);
+}
+
 /* Lien latex distinct dans la navbar */
 .nav-tex{
   display:inline-flex; align-items:center; gap:6px;
@@ -223,7 +286,7 @@ main{
   position:relative; z-index:1;
   max-width:1500px;
   margin:0 auto;
-  padding:0 32px 120px;
+  padding:0 32px 0;
 }
 
 #hero{
@@ -307,9 +370,7 @@ h1.hero-title{
   right:50%;
   margin-left:-50vw;
   margin-right:-50vw;
-  background:var(--bg-panel);
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg-panel) 60px, var(--bg-panel) calc(100% - 60px), var(--bg) 100%);
   padding:56px 0 64px;
 }
 .gallery-inner{
@@ -354,10 +415,10 @@ h1.hero-title{
 .seq-card{
   scroll-snap-align:start;
   flex:0 0 auto;
-  width:min(78vw, 400px);
-  min-height:480px;
+  width:min(65vw, 300px);
+  min-height:340px;
   border-radius:var(--radius-lg);
-  padding:34px 30px 30px;
+  padding:24px 22px 22px;
   position:relative;
   overflow:hidden;
   display:flex;
@@ -389,13 +450,13 @@ h1.hero-title{
 }
 
 .seq-card h3{
-  font-size:1.5rem; font-weight:700; letter-spacing:-0.01em;
-  margin:0 0 10px; line-height:1.15;
+  font-size:1.25rem; font-weight:700; letter-spacing:-0.01em;
+  margin:0 0 8px; line-height:1.15;
 }
 .seq-card .seq-desc{
-  font-size:0.86rem; color:var(--grey); line-height:1.55;
-  margin:0 0 24px;
-  max-width:30ch;
+  font-size:0.8rem; color:var(--grey); line-height:1.5;
+  margin:0 0 18px;
+  max-width:28ch;
 }
 
 .seq-meta{
@@ -428,8 +489,8 @@ h1.hero-title{
 /* motif visuel de fond, discret, façon "objet flottant" Apple */
 .seq-visual{
   position:absolute;
-  right:-40px; bottom:-40px;
-  width:220px; height:220px;
+  right:-30px; bottom:-30px;
+  width:160px; height:160px;
   border-radius:50%;
   opacity:0.5;
   filter:blur(2px);
@@ -442,7 +503,7 @@ h1.hero-title{
 .seq-card.v1 .seq-visual{ background:radial-gradient(circle, rgba(0,87,184,0.30), transparent 70%); }
 
 @media (max-width:600px){
-  .seq-card{ min-height:420px; padding:28px 22px 24px; }
+  .seq-card{ min-height:300px; padding:20px 18px 18px; }
 }
 
 /* ============================================================
@@ -672,7 +733,7 @@ h1.hero-title{
    Section secondaire (placeholder, pour donner le ton "lycée")
    ============================================================ */
 .section-block{
-  margin-top:120px;
+  margin-top:0;
 }
 .section-block h2{
   font-size:1.5rem; font-weight:700; margin:0 0 8px; letter-spacing:-0.01em;
@@ -689,10 +750,11 @@ h1.hero-title{
   right:50%;
   margin-left:-50vw;
   margin-right:-50vw;
-  background:var(--bg-panel);
-  border-top:1px solid var(--line);
-  border-bottom:1px solid var(--line);
+  background:linear-gradient(180deg, var(--bg) 0%, var(--bg-panel) 60px, var(--bg-panel) calc(100% - 60px), var(--bg) 100%);
   padding:64px 0 70px;
+}
+.section-block.band.light{
+  background:linear-gradient(180deg, var(--bg) 0%, #14284A 60px, #14284A calc(100% - 60px), var(--bg) 100%);
 }
 .section-block.band .band-inner{
   max-width:1436px;
@@ -720,21 +782,40 @@ h1.hero-title{
       <a class="nav-seclink" href="#section-transversale">Transversale</a>
       <a class="nav-seclink" href="#section-annexes">Annexes</a>
       <a class="nav-seclink" href="#section-ressources">Ressources</a>
-      <a class="nav-seclink" href="#site-footer">Contact</a>
     </div>
   </div>
 
   <div class="nav-side nav-grades">
-    <span class="nav-link" title="Espace collège">Collège</span>
+    <div class="nav-grade-dropdown">
+      <a class="nav-link" href="https://professeurbrahim.github.io/Accueil/" title="Espace collège">Collège</a>
+      <div class="nav-grade-menu">
+        <a href="https://professeurbrahim.github.io/6eme/">6e</a>
+        <a href="https://professeurbrahim.github.io/5eme/">5e</a>
+        <a href="https://professeurbrahim.github.io/4eme/">4e</a>
+        <a href="https://professeurbrahim.github.io/3eme/">3e</a>
+      </div>
+    </div>
     <a class="nav-link nav-link-active" href="#">2nde</a>
-    <a class="nav-link" href="#">1ère</a>
-    <a class="nav-link" href="#">Term</a>
+    <div class="nav-grade-dropdown">
+      <a class="nav-link" href="#">1ère</a>
+      <div class="nav-grade-menu">
+        <a href="#">1ère Ens. Sci.</a>
+        <a href="#">1ère Spé</a>
+        <a href="#">1ère Techno</a>
+      </div>
+    </div>
+    <div class="nav-grade-dropdown">
+      <a class="nav-link" href="#">Term</a>
+      <div class="nav-grade-menu">
+        <a href="#">Term Ens. Sci.</a>
+        <a href="#">Term Spé</a>
+        <a href="#">Term Techno</a>
+      </div>
+    </div>
   </div>
 </nav>
 
 <div id="floating-toolbar">
-  <button id="close-accordions-button" class="nav-btn" title="Fermer tout">⊟</button>
-  <button id="dark-mode-toggle" class="nav-btn" title="Mode contraste">◐</button>
   <button id="scrolltop-button" class="nav-btn" title="Haut de page">↑</button>
 </div>
 
@@ -923,9 +1004,11 @@ h1.hero-title{
    </div>
   </section>
 
-  <section class="section-block" id="section-transversale">
+  <section class="section-block band light" id="section-transversale">
+   <div class="band-inner">
     <h2>Transversale</h2>
     <p>Automatismes, démonstrations exigibles et prolongements — à compléter une fois la structure validée.</p>
+   </div>
   </section>
 
   <section class="section-block band" id="section-annexes">
@@ -935,9 +1018,11 @@ h1.hero-title{
    </div>
   </section>
 
-  <section class="section-block" id="section-ressources">
+  <section class="section-block band light" id="section-ressources">
+   <div class="band-inner">
     <h2>Ressources</h2>
     <p>Manuels, sites, activités transversales et projets à venir.</p>
+   </div>
   </section>
 
 </main>
@@ -967,10 +1052,6 @@ h1.hero-title{
 
   </div>
 </div>
-
-<footer id="site-footer" style="border-top:1px solid var(--line); padding:40px 32px; text-align:center; color:var(--grey-dim); font-size:0.8rem;">
-  M. Brahim — Mathématiques · Seconde
-</footer>
 
 <script>
   // Masquer la navbar au scroll vers le bas
@@ -1268,13 +1349,6 @@ h1.hero-title{
 
   // Outil flottant
   document.getElementById('scrolltop-button').addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-  document.getElementById('close-accordions-button').addEventListener('click', () => {
-    document.querySelectorAll('.mini-accordion.active').forEach(b => b.classList.remove('active'));
-  });
-  document.getElementById('dark-mode-toggle').addEventListener('click', (e) => {
-    document.body.classList.toggle('contrast-mode');
-    e.currentTarget.textContent = document.body.classList.contains('contrast-mode') ? '◑' : '◐';
-  });
 </script>
 
 </body>
