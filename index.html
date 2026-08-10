@@ -1248,12 +1248,12 @@ h1.hero-title{
 
     <div class="seq-track full-width" id="transversale-track">
 
-      <a class="seq-card v1" href="#">
+      <a class="seq-card v1" href="#" data-chapter-id="transversale-automatismes">
         <span class="seq-tag"><span class="n">01</span><span class="cat-label cat-yellow">Transversale</span></span>
         <h3>Automatismes</h3>
         <p class="seq-desc">Calcul mental, gestes techniques à automatiser tout au long de l'année.</p>
         <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
+          <div class="seq-thumb"><img src="images/Automatismes.png" alt="Automatismes"></div>
           <span class="seq-cta">Ouvrir le chapitre
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </span>
@@ -1261,7 +1261,7 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v2" href="#">
+      <a class="seq-card v2" href="#" data-chapter-id="transversale-vocabulaire">
         <span class="seq-tag"><span class="n">02</span><span class="cat-label cat-brown">Transversale</span></span>
         <h3>Vocabulaire ensembliste et logique</h3>
         <p class="seq-desc">Ensembles, quantificateurs, connecteurs logiques et raisonnement mathématique.</p>
@@ -1274,7 +1274,7 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
+      <a class="seq-card v3" href="#" data-chapter-id="transversale-algo">
         <span class="seq-tag"><span class="n">03</span><span class="cat-label cat-pink">Transversale</span></span>
         <h3>Algorithmique et programmation</h3>
         <p class="seq-desc">Notions de base en Python : variables, boucles, tests, fonctions simples.</p>
@@ -1498,22 +1498,173 @@ h1.hero-title{
       slate: '#6E7C99'
     };
 
+    // Structure dédiée pour la carte "Automatismes" : catégories du programme + liens par automatisme
+    const automatismesData = {
+      commentaires: 'Nouveauté structurelle du programme 2026. Objectifs doubles : préparer à court terme l\'épreuve anticipée de première, et développer à long terme l\'esprit critique par une meilleure maîtrise des nombres, du calcul et des représentations graphiques. À travailler de façon progressive dès la 2de, sans se limiter au format QCM. Trois contenus sont à décaler en partie vers la 1ère selon la progression de l\'équipe pendant les années de transition (26-27-28) : les identités remarquables, la résolution des inéquations, la comparaison de distributions par boîtes à moustaches.',
+      categories: [
+        {
+          key: 'calcul', label: 'Calcul numérique et algébrique', icon: 'icoBolt', color: 'amber',
+          items: [
+            { title: 'Comparer deux nombres (différence, quotient)', href: '#' },
+            { title: 'Opérations et comparaisons de fractions simples', href: '#' },
+            { title: 'Opérations sur les puissances', href: '#' },
+            { title: 'Passer d\'une écriture à une autre (décimale, fractionnaire, pourcentage)', href: '#' },
+            { title: 'Estimer un ordre de grandeur', href: '#' },
+            { title: 'Vraisemblance et cohérence d\'un résultat', href: '#' },
+            { title: 'Conversions d\'unités', href: '#' },
+            { title: 'Calcul littéral élémentaire', href: '#' },
+            { title: 'Développer, factoriser, réduire une expression', href: '#' },
+            { title: 'Résoudre une équation ou une inéquation simple', href: '#' },
+            { title: 'Isoler une variable dans une égalité', href: '#' },
+            { title: 'Application numérique d\'une formule', href: '#' },
+          ]
+        },
+        {
+          key: 'proportions', label: 'Proportions et pourcentages', icon: 'icoTarget', color: 'indigo',
+          items: [
+            { title: 'Calculer, appliquer, exprimer une proportion', href: '#' },
+            { title: 'Retrouver une partie connaissant le tout, ou l\'inverse', href: '#' },
+          ]
+        },
+        {
+          key: 'evolutions', label: 'Évolutions et variations', icon: 'icoCompass', color: 'slate',
+          items: [
+            { title: 'Formulation additive vers formulation multiplicative', href: '#' },
+          ]
+        },
+        {
+          key: 'fonctions', label: 'Fonctions et représentations', icon: 'icoSigma', color: 'teal',
+          items: [
+            { title: 'Déterminer graphiquement images et antécédents', href: '#' },
+            { title: 'Exploiter une équation de courbe', href: '#' },
+            { title: 'Reconnaître fonction linéaire, fonction affine', href: '#' },
+          ]
+        },
+        {
+          key: 'geometrie', label: 'Géométrie', icon: 'icoCheck', color: 'cyan',
+          items: [
+            { title: 'Repérer un point sur une droite graduée', href: '#' },
+            { title: 'Lire et placer un point dans un repère orthogonal', href: '#' },
+            { title: 'Calculer périmètres, aires et volumes', href: '#' },
+            { title: 'Théorème de Pythagore', href: '#' },
+            { title: 'Théorème de Thalès', href: '#' },
+            { title: 'Trigonométrie dans le triangle rectangle', href: '#' },
+          ]
+        },
+        {
+          key: 'statistiques', label: 'Statistiques', icon: 'icoBook', color: 'blue',
+          items: [
+            { title: 'Lire et commenter des graphiques usuels', href: '#' },
+            { title: 'Calculer et interpréter moyenne, médiane, quartiles', href: '#' },
+            { title: 'Comparer des distributions à l\'aide de boîtes à moustaches', href: '#' },
+          ]
+        },
+        {
+          key: 'probabilites', label: 'Probabilités', icon: 'icoFlask', color: 'violet',
+          items: [
+            { title: 'Une probabilité est un nombre entre 0 et 1', href: '#' },
+            { title: 'Calculer la probabilité de l\'événement contraire', href: '#' },
+            { title: 'Probabilité d\'un événement comme somme des issues', href: '#' },
+            { title: 'Utiliser P(A) = Card(A) / Card(Ω) en équiprobabilité', href: '#' },
+          ]
+        },
+      ]
+    };
+
+    // Contenu spécifique tiré du programme officiel 2026, pour certains chapitres identifiés par data-chapter-id
+    const chapterOverrides = {
+      'transversale-vocabulaire': {
+        contenu: {
+          lead: 'Notions transversales à tous les chapitres du programme, à travailler d\'abord en situation puis à formaliser après plusieurs rencontres.',
+          items: [
+            'Élément d\'un ensemble, sous-ensemble, ensemble vide, appartenance et inclusion.',
+            'Réunion, intersection et complémentaire d\'un ensemble ; notations ∅, ∈, ⊂, ⋂, ⋃, {…}.',
+            'Notation des ensembles de nombres et des intervalles.',
+            'Notion de couple et de produit cartésien de deux ensembles.',
+            'Complémentaire d\'un sous-ensemble A de E : notation Ā ou E \\ A.',
+            'Reconnaître une proposition mathématique, utiliser des variables pour en écrire.',
+            'Lire et écrire des propositions avec les connecteurs « et », « ou » ; formuler une négation simple.',
+            'Mobiliser un contre-exemple pour montrer qu\'une proposition est fausse.',
+            'Formuler une implication, une équivalence logique, et les mobiliser dans un raisonnement.',
+            'Formuler la réciproque et la contraposée d\'une implication.',
+            'Lire et écrire des propositions avec quantification universelle ou existentielle (symboles ∀ et ∃ hors programme).',
+            'Raisonnements par disjonction des cas et par l\'absurde.'
+          ]
+        },
+        competences: {
+          lead: 'Ce que l\'élève doit savoir faire en fin d\'année sur ce thème transversal.',
+          items: [
+            'Utiliser à bon escient le vocabulaire et les symboles ensemblistes de base.',
+            'Distinguer et formuler implication, équivalence, réciproque et contraposée.',
+            'Produire un raisonnement par disjonction des cas ou par l\'absurde dans un contexte simple.',
+            'Réinvestir ce vocabulaire dans les autres chapitres (équations, fonctions, statistiques, géométrie).'
+          ]
+        },
+        commentaires: 'Il n\'est pas question de travailler ces notions dans des séquences dédiées, mais de les traiter de manière transversale au fil des activités. Le programme invite, comme au collège, à davantage travailler sur les ensembles : ensemble de solutions d\'une équation ou d\'une inéquation, ensemble de définition d\'une fonction, ensemble de référence en statistiques, ensemble de points en géométrie.'
+      },
+      'transversale-algo': {
+        contenu: {
+          lead: 'Deux volets : variables et instructions élémentaires, puis notion de fonction en algorithmique.',
+          items: [
+            'Variables informatiques de type entier, booléen, flottant, chaîne de caractères.',
+            'Affectation (notée ← en langage naturel).',
+            'Séquence d\'instructions, instruction conditionnelle.',
+            'Boucle bornée (for), boucle non bornée (while).',
+            'Fonctions à un ou plusieurs arguments.',
+            'Fonction renvoyant un nombre aléatoire.',
+            'Série statistique obtenue par la répétition de l\'appel d\'une telle fonction.'
+          ]
+        },
+        competences: {
+          lead: 'Ce que l\'élève doit savoir faire en fin d\'année sur ce thème transversal.',
+          items: [
+            'Écrire et lire un programme simple utilisant variables, tests et boucles.',
+            'Structurer un programme en fonctions plutôt qu\'en instructions successives.',
+            'Simuler une expérience aléatoire à l\'aide d\'une fonction renvoyant un nombre aléatoire.',
+            'Mobiliser l\'algorithmique dans des situations variées, pas seulement des calculs routiniers.'
+          ]
+        },
+        commentaires: 'Il est recommandé de ne pas se limiter à des calculs routiniers : le travail de l\'algorithmique doit se faire dans des situations variées. L\'accent est mis sur la programmation modulaire (fonctions), à privilégier ; cela permet de contourner les instructions print et input, qui ne sont pas des attendus du programme.'
+      }
+    };
+
     // Rubriques disponibles pour chaque chapitre, groupées comme un volet de Réglages iPadOS
     function buildSections(card) {
       const title = card.querySelector('h3')?.textContent.trim() || '';
       const desc  = card.querySelector('.seq-desc')?.textContent.trim() || '';
       const notions = desc.replace(/\.$/, '').split(/,| et /i).map(s => s.trim()).filter(Boolean);
+      const chapterId = card.getAttribute('data-chapter-id');
+      const override = chapterOverrides[chapterId];
+
+      // Structure dédiée pour la carte "Automatismes" : une entrée par catégorie du programme + Commentaires
+      if (chapterId === 'transversale-automatismes') {
+        const iconMap = { icoBolt, icoTarget, icoCompass, icoSigma, icoCheck, icoBook, icoFlask, icoChat2 };
+        return [
+          { group: 'Catégories', items: automatismesData.categories.map(cat => ({
+            key: cat.key, label: cat.label, icon: iconMap[cat.icon], color: tints[cat.color],
+            render: () => renderAutomatismesCategory(cat)
+          })) },
+          { group: 'Notes', items: [
+            { key:'commentaires', label:'Commentaires', icon:icoChat2, color:tints.slate,
+              render: () => renderNote('Commentaires', automatismesData.commentaires) },
+          ]},
+        ];
+      }
 
       return [
         { group: 'Programme', items: [
           { key:'contenu', label:'Contenu', icon:icoList, color:tints.blue,
-            render: () => renderBullets('Contenu du chapitre',
+            render: () => override
+              ? renderBullets('Contenu du chapitre', override.contenu.lead, override.contenu.items)
+              : renderBullets('Contenu du chapitre',
               `Notions abordées dans « ${title} ».`,
               notions.length ? notions.map(n => n.charAt(0).toUpperCase() + n.slice(1)) : [desc]) },
           { key:'competences', label:'Compétences', icon:icoTarget, color:tints.indigo,
-            render: () => renderBullets('Compétences visées',
-              'Ce que l\'élève doit savoir faire en fin de chapitre.',
-              [
+            render: () => override
+              ? renderBullets('Compétences visées', override.competences.lead, override.competences.items)
+              : renderBullets('Compétences visées',
+                'Ce que l\'élève doit savoir faire en fin de chapitre.',
+                [
                 `Connaître et utiliser le vocabulaire lié à « ${title.toLowerCase()} ».`,
                 'Appliquer les méthodes du cours dans des exercices guidés puis en autonomie.',
                 'Justifier un résultat en rédigeant une argumentation rigoureuse.',
@@ -1564,7 +1715,9 @@ h1.hero-title{
         ]},
         { group: 'Notes', items: [
           { key:'commentaires', label:'Commentaires', icon:icoChat2, color:tints.slate,
-            render: () => renderNote('Commentaires',
+            render: () => override
+              ? renderNote('Commentaires', override.commentaires)
+              : renderNote('Commentaires',
               'Remarques pédagogiques, prérequis à rappeler, points de vigilance à surveiller pendant la séance.') },
         ]},
       ];
@@ -1605,6 +1758,28 @@ h1.hero-title{
                 <span class="chapter-doc-info">
                   <span class="doc-title">${doc.title}</span>
                   <span class="doc-type">${doc.type}</span>
+                </span>
+                <span class="chapter-doc-go">${icoGo}</span>
+              </a>
+            </li>
+          `).join('')}
+        </ul>
+      `;
+    }
+
+    function renderAutomatismesCategory(cat) {
+      return `
+        <div class="chapter-content-head">
+          <h4>${cat.label}</h4>
+        </div>
+        <p class="chapter-content-lead">Un lien par automatisme — à compléter avec ton document ou ton site.</p>
+        <ul class="chapter-doc-list">
+          ${cat.items.map(item => `
+            <li>
+              <a class="chapter-doc" href="${item.href}" target="_blank" rel="noopener">
+                <span class="chapter-doc-icon">${icoDoc}</span>
+                <span class="chapter-doc-info">
+                  <span class="doc-title">${item.title}</span>
                 </span>
                 <span class="chapter-doc-go">${icoGo}</span>
               </a>
