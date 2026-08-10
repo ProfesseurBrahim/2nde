@@ -185,9 +185,10 @@ body::before{
 .nav-grade-menu{
   position:absolute;
   top:calc(100% + 8px);
-  left:50%;
-  transform:translateX(-50%) translateY(-6px);
-  min-width:150px;
+  right:0;
+  left:auto;
+  transform:translateY(-6px);
+  min-width:128px;
   background:#0b1524;
   border:1px solid var(--line);
   border-radius:10px;
@@ -208,7 +209,7 @@ body::before{
   opacity:1;
   visibility:visible;
   pointer-events:auto;
-  transform:translateX(-50%) translateY(0);
+  transform:translateY(0);
   transition:opacity 0.18s ease, transform 0.18s ease, visibility 0s;
 }
 .nav-grade-menu a{
@@ -462,6 +463,18 @@ h1.hero-title{
 }
 .seq-track::-webkit-scrollbar{ display:none; }
 
+/* Variante "pleine largeur" pour la section Transversale : grille sur grand écran, carrousel sinon */
+@media (min-width:901px){
+  .seq-track.full-width{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    overflow-x:visible;
+  }
+  .seq-track.full-width .seq-card{
+    width:100%;
+  }
+}
+
 .seq-card{
   scroll-snap-align:start;
   flex:0 0 auto;
@@ -498,6 +511,13 @@ h1.hero-title{
   display:flex; align-items:center; justify-content:center;
   font-size:0.66rem; color:var(--white);
 }
+.cat-label{ color:inherit; }
+.cat-red{ color:#FF5C5C; }
+.cat-purple{ color:#B183FF; }
+.cat-green{ color:#4ADE80; }
+.cat-yellow{ color:#FFD54A; }
+.cat-brown{ color:#B5794A; }
+.cat-pink{ color:#FF7AC6; }
 
 .seq-card h3{
   font-size:1.25rem; font-weight:700; letter-spacing:-0.01em;
@@ -648,8 +668,8 @@ h1.hero-title{
 #chapter-overlay.is-open{ opacity:1; visibility:visible; }
 
 .chapter-modal{
-  width:min(1080px, 100%);
-  height:min(84vh, 760px);
+  width:min(920px, 100%);
+  height:min(74vh, 660px);
   display:flex; flex-direction:column;
   border-radius:26px;
   border:1px solid var(--line);
@@ -984,9 +1004,9 @@ h1.hero-title{
     <div class="seq-track" id="seq-track">
 
       <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">01</span>Algèbre</span>
-        <h3>Nombres et calculs</h3>
-        <p class="seq-desc">Ensembles de nombres, calcul littéral, identités remarquables et puissances.</p>
+        <span class="seq-tag"><span class="n">01</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Calcul littéral</h3>
+        <p class="seq-desc">Développement, factorisation, identités remarquables et calcul avec des expressions littérales.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="images/Calcul littéral.png" alt="Calcul littéral"></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -997,9 +1017,9 @@ h1.hero-title{
       </a>
 
       <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">02</span>Algèbre</span>
-        <h3>Équations et inéquations</h3>
-        <p class="seq-desc">Résolution algébrique et graphique, mise en équation de problèmes.</p>
+        <span class="seq-tag"><span class="n">02</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Fractions, puissances, racines carrées</h3>
+        <p class="seq-desc">Opérations sur les fractions, règles de calcul sur les puissances et les racines carrées.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1010,8 +1030,60 @@ h1.hero-title{
       </a>
 
       <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">03</span>Fonctions</span>
-        <h3>Généralités sur les fonctions</h3>
+        <span class="seq-tag"><span class="n">03</span><span class="cat-label">Géométrie</span></span>
+        <h3>Les vecteurs 1/2</h3>
+        <p class="seq-desc">Translation, notion de vecteur, égalité de vecteurs et somme de deux vecteurs.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v1" href="#">
+        <span class="seq-tag"><span class="n">04</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Nombres réels 1/2</h3>
+        <p class="seq-desc">Ensembles de nombres, intervalles et introduction aux nombres réels.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v2" href="#">
+        <span class="seq-tag"><span class="n">05</span><span class="cat-label">Géométrie</span></span>
+        <h3>Les vecteurs 2/2</h3>
+        <p class="seq-desc">Coordonnées d'un vecteur, colinéarité et applications aux configurations du plan.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v3" href="#">
+        <span class="seq-tag"><span class="n">06</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Nombres réels 2/2</h3>
+        <p class="seq-desc">Valeur absolue, encadrements et approfondissement des propriétés des nombres réels.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v1" href="#">
+        <span class="seq-tag"><span class="n">07</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Notion de fonction</h3>
         <p class="seq-desc">Notion de fonction, image, antécédent, courbe représentative, variations.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
@@ -1022,23 +1094,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">04</span>Fonctions</span>
-        <h3>Fonctions de référence</h3>
-        <p class="seq-desc">Fonctions affines, carré et inverse : propriétés et représentations.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
       <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">05</span>Géométrie</span>
-        <h3>Géométrie repérée</h3>
-        <p class="seq-desc">Repère du plan, coordonnées, distances, milieu et alignement.</p>
+        <span class="seq-tag"><span class="n">08</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Arithmétique</h3>
+        <p class="seq-desc">Multiples, diviseurs, division euclidienne et nombres premiers.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1049,9 +1108,9 @@ h1.hero-title{
       </a>
 
       <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">06</span>Géométrie</span>
-        <h3>Vecteurs</h3>
-        <p class="seq-desc">Translation, vecteurs, coordonnées, somme et colinéarité.</p>
+        <span class="seq-tag"><span class="n">09</span><span class="cat-label">Géométrie</span></span>
+        <h3>Vecteurs et repérage</h3>
+        <p class="seq-desc">Repère du plan, coordonnées, distances, milieu et alignement à l'aide des vecteurs.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1062,9 +1121,9 @@ h1.hero-title{
       </a>
 
       <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">07</span>Géométrie</span>
-        <h3>Trigonométrie</h3>
-        <p class="seq-desc">Cercle trigonométrique, cosinus, sinus et angles associés.</p>
+        <span class="seq-tag"><span class="n">10</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Équations</h3>
+        <p class="seq-desc">Résolution d'équations du premier degré et mise en équation de problèmes.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1075,7 +1134,33 @@ h1.hero-title{
       </a>
 
       <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">08</span>Statistiques &amp; probabilités</span>
+        <span class="seq-tag"><span class="n">11</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
+        <h3>Information chiffrée</h3>
+        <p class="seq-desc">Proportions, pourcentages, évolutions et indices pour analyser des données chiffrées.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v3" href="#">
+        <span class="seq-tag"><span class="n">12</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Les fonctions de référence</h3>
+        <p class="seq-desc">Fonctions affines, carré et inverse : propriétés et représentations.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v1" href="#">
+        <span class="seq-tag"><span class="n">13</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
         <h3>Statistiques</h3>
         <p class="seq-desc">Indicateurs de position et de dispersion, représentations, comparaison de séries.</p>
         <div class="seq-meta">
@@ -1087,8 +1172,47 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
+      <a class="seq-card v2" href="#">
+        <span class="seq-tag"><span class="n">14</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Variations d'une fonction</h3>
+        <p class="seq-desc">Tableaux de variations, extremums et lecture graphique des variations.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
       <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">09</span>Statistiques &amp; probabilités</span>
+        <span class="seq-tag"><span class="n">15</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Inéquations</h3>
+        <p class="seq-desc">Résolution algébrique et graphique d'inéquations du premier degré.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v1" href="#">
+        <span class="seq-tag"><span class="n">16</span><span class="cat-label">Géométrie</span></span>
+        <h3>Droites du plan</h3>
+        <p class="seq-desc">Équations de droites, coefficient directeur, parallélisme et perpendicularité.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v2" href="#">
+        <span class="seq-tag"><span class="n">17</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
         <h3>Probabilités</h3>
         <p class="seq-desc">Expérience aléatoire, probabilité d'un événement, arbres pondérés.</p>
         <div class="seq-meta">
@@ -1100,23 +1224,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">10</span>Géométrie</span>
-        <h3>Géométrie dans l'espace</h3>
-        <p class="seq-desc">Solides usuels, sections planes, représentation en perspective cavalière.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
-      <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">11</span>Algorithmique</span>
-        <h3>Algorithmique &amp; programmation</h3>
-        <p class="seq-desc">Notions de base en Python : variables, boucles, tests, fonctions simples.</p>
+      <a class="seq-card v3" href="#">
+        <span class="seq-tag"><span class="n">18</span><span class="cat-label">Géométrie</span></span>
+        <h3>Systèmes d'équations et droites</h3>
+        <p class="seq-desc">Résolution de systèmes d'équations et lien avec les intersections de droites.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1134,6 +1245,49 @@ h1.hero-title{
    <div class="band-inner">
     <h2>Transversale</h2>
     <p>Automatismes, démonstrations exigibles et prolongements — à compléter une fois la structure validée.</p>
+
+    <div class="seq-track full-width" id="transversale-track">
+
+      <a class="seq-card v1" href="#">
+        <span class="seq-tag"><span class="n">01</span><span class="cat-label cat-yellow">Transversale</span></span>
+        <h3>Automatismes</h3>
+        <p class="seq-desc">Calcul mental, gestes techniques à automatiser tout au long de l'année.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v2" href="#">
+        <span class="seq-tag"><span class="n">02</span><span class="cat-label cat-brown">Transversale</span></span>
+        <h3>Vocabulaire ensembliste et logique</h3>
+        <p class="seq-desc">Ensembles, quantificateurs, connecteurs logiques et raisonnement mathématique.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v3" href="#">
+        <span class="seq-tag"><span class="n">03</span><span class="cat-label cat-pink">Transversale</span></span>
+        <h3>Algorithmique et programmation</h3>
+        <p class="seq-desc">Notions de base en Python : variables, boucles, tests, fonctions simples.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+    </div>
    </div>
   </section>
 
@@ -1154,7 +1308,7 @@ h1.hero-title{
       <div class="res-card">
         <span class="res-tag">Manuel</span>
         <div class="res-apps">
-          <a class="res-app" href="#" target="_blank" rel="noopener"><span class="res-app-icon"><img src="Sesamaths.png" alt="Sesamaths"></span><span class="res-app-label">Sesamaths</span></a>
+          <a class="res-app" href="#" target="_blank" rel="noopener"><span class="res-app-icon"><img src="images/Sesamaths.png" alt="Sesamaths"></span><span class="res-app-label">Sesamaths</span></a>
           <a class="res-app" href="#" target="_blank" rel="noopener"><span class="res-app-icon"><img src="" alt=""></span><span class="res-app-label">Exercices</span></a>
           <a class="res-app" href="#" target="_blank" rel="noopener"><span class="res-app-icon"><img src="" alt=""></span><span class="res-app-label">Corrigés</span></a>
           <a class="res-app" href="#" target="_blank" rel="noopener"><span class="res-app-icon"><img src="" alt=""></span><span class="res-app-label">Fiches</span></a>
