@@ -1642,7 +1642,7 @@ h1.hero-title{
             key: cat.key, label: cat.label, icon: iconMap[cat.icon], color: tints[cat.color],
             render: () => renderAutomatismesCategory(cat)
           })) },
-          { group: 'Notes', items: [
+          { group: 'Aller plus loin', items: [
             { key:'commentaires', label:'Commentaires', icon:icoChat2, color:tints.slate,
               render: () => renderNote('Commentaires', automatismesData.commentaires) },
           ]},
@@ -1668,6 +1668,11 @@ h1.hero-title{
                 'Justifier un résultat en rédigeant une argumentation rigoureuse.',
                 'Mobiliser la notion dans un problème ou une situation concrète.'
               ]) },
+          { key:'demonstrations', label:'Démonstrations', icon:icoSigma, color:tints.indigo,
+            render: () => renderDocs('Démonstrations exigibles', [
+              { title:'Démonstration 1', type:'À connaître', href:'#' },
+              { title:'Démonstration 2', type:'À connaître', href:'#' },
+            ]) },
         ]},
         { group: 'Ressources de cours', items: [
           { key:'cours', label:'Cours', icon:icoBook, color:tints.blue,
@@ -1697,11 +1702,6 @@ h1.hero-title{
             ]) },
         ]},
         { group: 'Aller plus loin', items: [
-          { key:'demonstrations', label:'Démonstrations', icon:icoSigma, color:tints.indigo,
-            render: () => renderDocs('Démonstrations exigibles', [
-              { title:'Démonstration 1', type:'À connaître', href:'#' },
-              { title:'Démonstration 2', type:'À connaître', href:'#' },
-            ]) },
           { key:'prolongements', label:'Prolongements possibles', icon:icoCompass, color:tints.slate,
             render: () => renderBullets('Prolongements possibles',
               'Pistes d\'ouverture pour aller au-delà du programme.',
@@ -1710,8 +1710,6 @@ h1.hero-title{
                 'Application dans un contexte concret ou une autre discipline.',
                 'Piste d\'approfondissement pour les élèves les plus à l\'aise.'
               ]) },
-        ]},
-        { group: 'Notes', items: [
           { key:'commentaires', label:'Commentaires', icon:icoChat2, color:tints.slate,
             render: () => override
               ? renderNote('Commentaires', override.commentaires)
