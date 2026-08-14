@@ -473,7 +473,7 @@ h1.hero-title{
   box-shadow:0 4px 16px rgba(0,0,0,0.35);
   margin:0 -6px;
 }
-@media (min-width:1160px){
+@media (min-width:1600px){
   .seq-track-wrap .gallery-nav{ left:-56px; right:-56px; }
 }
 @media (max-width:700px){
@@ -604,6 +604,31 @@ h1.hero-title{
 }
 
 /* Cartes de la section Ressources — liste de liens façon "apps" */
+.res-track-wrap{ position:relative; }
+.res-track-wrap .gallery-nav{
+  display:flex;
+  position:absolute;
+  top:50%;
+  left:0;
+  right:0;
+  transform:translateY(-50%);
+  justify-content:space-between;
+  pointer-events:none;
+  gap:0;
+  z-index:5;
+}
+.res-track-wrap .gallery-nav button{
+  pointer-events:auto;
+  box-shadow:0 4px 16px rgba(0,0,0,0.35);
+  margin:0 -6px;
+}
+@media (min-width:1600px){
+  .res-track-wrap .gallery-nav{ left:-56px; right:-56px; }
+}
+@media (max-width:700px){
+  .res-track-wrap .gallery-nav{ display:none; }
+}
+
 .res-track{
   display:flex;
   gap:20px;
@@ -1336,6 +1361,12 @@ h1.hero-title{
     <h2>Ressources</h2>
     <p>Manuels, sites, activités transversales et projets à venir.</p>
 
+    <div class="res-track-wrap">
+      <div class="gallery-nav">
+        <button id="res-prev" aria-label="Précédent"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg></button>
+        <button id="res-next" aria-label="Suivant"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></button>
+      </div>
+
     <div class="res-track" id="res-track">
 
       <div class="res-card">
@@ -1394,6 +1425,7 @@ h1.hero-title{
         </div>
       </div>
 
+    </div>
     </div>
    </div>
   </section>
@@ -1492,6 +1524,11 @@ h1.hero-title{
   const cardWidth = () => track.querySelector('.seq-card').getBoundingClientRect().width + 20;
   document.getElementById('seq-next').addEventListener('click', () => track.scrollBy({ left: cardWidth(), behavior: 'smooth' }));
   document.getElementById('seq-prev').addEventListener('click', () => track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }));
+
+  const resTrack = document.getElementById('res-track');
+  const resCardWidth = () => resTrack.querySelector('.res-card').getBoundingClientRect().width + 20;
+  document.getElementById('res-next').addEventListener('click', () => resTrack.scrollBy({ left: resCardWidth(), behavior: 'smooth' }));
+  document.getElementById('res-prev').addEventListener('click', () => resTrack.scrollBy({ left: -resCardWidth(), behavior: 'smooth' }));
 
   // Modale "fiche de chapitre" — vue maître-détail façon app iPad
   (function () {
