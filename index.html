@@ -625,6 +625,70 @@ h1.hero-title{
 }
 
 /* Cartes de la section Ressources — liste de liens façon "apps" */
+.annex-cards{
+  display:grid;
+  grid-template-columns:repeat(4, 1fr);
+  gap:16px;
+  margin-top:28px;
+}
+.annex-cards-single{
+  grid-template-columns:minmax(0,420px);
+  justify-content:start;
+}
+.annex-card{
+  border-radius:var(--radius-md);
+  border:1px solid var(--line);
+  background:linear-gradient(165deg, var(--bg-panel-2), var(--bg-panel) 70%);
+  padding:22px 20px;
+  display:flex;
+  flex-direction:column;
+  gap:14px;
+  transition:border-color 0.25s, transform 0.25s;
+  text-align:left;
+  cursor:pointer;
+  font-family:inherit;
+}
+.annex-card:hover{ border-color:var(--accent); transform:translateY(-2px); }
+.annex-card-icon{
+  width:38px; height:38px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:10px;
+}
+.annex-card-icon svg{ width:22px; height:22px; }
+.annex-card p{
+  margin:0;
+  font-size:0.95rem;
+  line-height:1.45;
+  color:var(--white);
+}
+.annex-card p .hl{ font-weight:700; }
+.annex-card-tcg{
+  position:relative;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.14);
+  background:
+    linear-gradient(135deg, rgba(255,0,150,0.10), rgba(0,163,255,0.10) 35%, rgba(255,214,0,0.10) 65%, rgba(140,0,255,0.12)),
+    linear-gradient(165deg, var(--bg-panel-2), var(--bg-panel) 70%);
+  background-size:250% 250%, 100% 100%;
+  animation:tcg-shine 7s ease-in-out infinite;
+}
+.annex-card-tcg:hover{ border-color:rgba(255,255,255,0.4); }
+@keyframes tcg-shine{
+  0%{ background-position:0% 0%, 0 0; }
+  50%{ background-position:100% 100%, 0 0; }
+  100%{ background-position:0% 0%, 0 0; }
+}
+.annex-card-icon-tcg{
+  background:linear-gradient(135deg, #FF3D9A, #00A3FF, #FFD600);
+  color:#0B0F17;
+}
+@media (max-width:1000px){
+  .annex-cards{ grid-template-columns:repeat(2, 1fr); }
+}
+@media (max-width:560px){
+  .annex-cards{ grid-template-columns:1fr; }
+}
+
 .res-track-wrap{ position:relative; }
 .res-track-wrap .gallery-nav{
   display:flex;
@@ -982,6 +1046,225 @@ h1.hero-title{
   padding:0 32px;
 }
 
+
+/* ============ Modale "Cartes à collectionner" — univers TCG ============ */
+#cartes-overlay{
+  position:fixed; inset:0;
+  z-index:200;
+  display:flex; align-items:center; justify-content:center;
+  padding:24px;
+  background:rgba(4,6,12,0.72);
+  backdrop-filter:blur(8px);
+  -webkit-backdrop-filter:blur(8px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.3s;
+}
+#cartes-overlay.is-open{ opacity:1; pointer-events:auto; }
+
+.tcg-modal{
+  position:relative;
+  width:min(96vw, 1080px);
+  height:min(88vh, 760px);
+  border-radius:28px;
+  overflow:hidden;
+  background:
+    radial-gradient(1200px 600px at 15% -10%, rgba(255,61,154,0.20), transparent 60%),
+    radial-gradient(1000px 700px at 90% 110%, rgba(0,163,255,0.22), transparent 60%),
+    linear-gradient(160deg, #10091E 0%, #0B0F17 55%, #05070C 100%);
+  border:1px solid rgba(255,255,255,0.10);
+  box-shadow:0 40px 100px rgba(0,0,0,0.55);
+  transform:translateY(24px) scale(0.97);
+  opacity:0;
+  transition:transform 0.35s cubic-bezier(.2,.9,.25,1), opacity 0.3s;
+  display:flex;
+  flex-direction:column;
+}
+#cartes-overlay.is-open .tcg-modal{ transform:translateY(0) scale(1); opacity:1; }
+
+.tcg-close{
+  position:absolute; top:18px; right:18px; z-index:5;
+  width:38px; height:38px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,0.16);
+  background:rgba(255,255,255,0.06);
+  color:var(--white);
+  font-size:1rem;
+  cursor:pointer;
+  display:flex; align-items:center; justify-content:center;
+  transition:border-color 0.2s, background 0.2s;
+}
+.tcg-close:hover{ border-color:var(--accent); background:rgba(0,163,255,0.14); }
+
+.tcg-view{
+  display:none;
+  flex-direction:column;
+  height:100%;
+  padding:44px 44px 32px;
+  overflow-y:auto;
+}
+.tcg-view.is-active{ display:flex; }
+
+.tcg-header{ text-align:center; margin-bottom:8px; }
+.tcg-header h2{
+  margin:0 0 8px;
+  font-size:1.7rem;
+  font-weight:800;
+  background:linear-gradient(90deg, #FF3D9A, #FFD600, #00A3FF);
+  -webkit-background-clip:text;
+  background-clip:text;
+  color:transparent;
+}
+.tcg-header p{
+  margin:0 auto; max-width:560px;
+  color:var(--grey);
+  font-size:0.92rem;
+  line-height:1.5;
+}
+
+/* Carrousel de boosters, façon présentoir qui tourne légèrement */
+.tcg-boosters{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:36px;
+  padding:40px 10px;
+  perspective:1200px;
+  flex-wrap:wrap;
+}
+.tcg-booster{
+  position:relative;
+  width:168px;
+  height:252px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.18);
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-end;
+  padding:16px 12px;
+  text-align:center;
+  color:#fff;
+  font-weight:800;
+  font-size:0.95rem;
+  overflow:hidden;
+  transform:rotate(var(--tilt, 0deg));
+  transition:transform 0.4s cubic-bezier(.2,.9,.25,1), box-shadow 0.4s;
+  box-shadow:0 18px 40px rgba(0,0,0,0.45);
+  background-size:220% 220%;
+  animation:tcg-shine 6s ease-in-out infinite;
+  animation-delay:var(--shine-delay, 0s);
+}
+.tcg-booster:nth-child(1){ --tilt:-7deg; }
+.tcg-booster:nth-child(2){ --tilt:0deg; }
+.tcg-booster:nth-child(3){ --tilt:7deg; }
+.tcg-booster:hover{
+  transform:rotate(0deg) translateY(-10px) scale(1.05);
+  box-shadow:0 26px 60px rgba(0,0,0,0.55);
+  z-index:2;
+}
+.tcg-booster::before{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
+}
+.tcg-booster-icon{
+  position:absolute; top:20px; left:50%; transform:translateX(-50%);
+  width:46px; height:46px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:50%;
+  background:rgba(255,255,255,0.16);
+  border:1px solid rgba(255,255,255,0.3);
+}
+.tcg-booster-icon svg{ width:24px; height:24px; }
+.tcg-booster span{ position:relative; z-index:1; line-height:1.25; }
+.tcg-booster small{
+  position:relative; z-index:1;
+  display:block;
+  font-weight:600;
+  font-size:0.68rem;
+  text-transform:uppercase;
+  letter-spacing:0.08em;
+  color:rgba(255,255,255,0.75);
+  margin-top:4px;
+}
+.tcg-booster-mathematiciens{ background-image:linear-gradient(135deg, #7A1FE0, #FF3D9A 60%, #FFD600); }
+.tcg-booster-outils{ background-image:linear-gradient(135deg, #007AFF, #00D4C0 60%, #7CFF6B); }
+.tcg-booster-demonstrations{ background-image:linear-gradient(135deg, #FF7A00, #FF3D3D 60%, #C400FF); }
+
+.tcg-cards-header{
+  display:flex; align-items:center; gap:16px;
+  margin-bottom:24px;
+}
+.tcg-back{
+  display:flex; align-items:center; gap:6px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.16);
+  color:var(--white);
+  border-radius:999px;
+  padding:8px 16px 8px 12px;
+  font-size:0.85rem;
+  font-weight:700;
+  cursor:pointer;
+  transition:border-color 0.2s, background 0.2s;
+}
+.tcg-back:hover{ border-color:var(--accent); background:rgba(0,163,255,0.14); }
+.tcg-back svg{ width:16px; height:16px; }
+.tcg-cards-header h3{ margin:0; font-size:1.15rem; font-weight:800; }
+
+.tcg-cards-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(150px, 1fr));
+  gap:18px;
+  padding-bottom:10px;
+}
+.tcg-card{
+  position:relative;
+  border-radius:14px;
+  padding:3px;
+  aspect-ratio:5/7;
+  cursor:default;
+  transition:transform 0.25s;
+}
+.tcg-card:hover{ transform:translateY(-6px) scale(1.03); }
+.tcg-card-inner{
+  height:100%;
+  border-radius:12px;
+  background:linear-gradient(165deg, #171122, #0B0F17 70%);
+  border:1px solid rgba(255,255,255,0.14);
+  display:flex; flex-direction:column;
+  overflow:hidden;
+}
+.tcg-card-art{
+  flex:1;
+  display:flex; align-items:center; justify-content:center;
+  font-size:2.4rem;
+  background:linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+}
+.tcg-card-body{ padding:10px 12px 12px; }
+.tcg-card-name{ font-weight:800; font-size:0.86rem; margin:0 0 3px; color:var(--white); }
+.tcg-card-type{ font-size:0.68rem; color:var(--grey); margin:0; }
+.tcg-card-rarity{
+  position:absolute; top:8px; right:8px;
+  font-size:0.6rem; font-weight:800;
+  text-transform:uppercase; letter-spacing:0.05em;
+  padding:2px 7px; border-radius:999px;
+  color:#0B0F17;
+}
+.rarity-commune{ background:#9CA3AF; }
+.rarity-rare{ background:#4AB6FF; }
+.rarity-epique{ background:#C084FC; }
+.rarity-legendaire{ background:linear-gradient(90deg,#FFD600,#FF7A00); }
+.tcg-card.rarity-legendaire .tcg-card-inner{ border-color:#FFD600; box-shadow:0 0 18px rgba(255,214,0,0.25); }
+.tcg-card.rarity-epique .tcg-card-inner{ border-color:#C084FC; }
+.tcg-card.rarity-rare .tcg-card-inner{ border-color:#4AB6FF; }
+
+@media (max-width:640px){
+  .tcg-view{ padding:60px 20px 24px; }
+  .tcg-booster{ width:140px; height:210px; }
+}
 </style>
 </head>
 
@@ -1362,6 +1645,15 @@ h1.hero-title{
   <section class="section-block band" id="section-annexes">
    <div class="band-inner">
     <h2>Annexes</h2>
+
+    <div class="annex-cards annex-cards-single">
+      <button type="button" class="annex-card annex-card-tcg" id="open-cartes-modal">
+        <span class="annex-card-icon annex-card-icon-tcg">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="12" height="16" rx="2" transform="rotate(-8 9 13)"/><rect x="8" y="3" width="12" height="16" rx="2"/></svg>
+        </span>
+        <p><span class="hl">Cartes</span> — un projet de cartes à collectionner : mathématiciens, outils de l'année et démonstrations à connaître.</p>
+      </button>
+    </div>
    </div>
   </section>
 
@@ -1462,6 +1754,31 @@ h1.hero-title{
       </div>
     </div>
 
+  </div>
+</div>
+
+<div id="cartes-overlay" aria-hidden="true">
+  <div class="tcg-modal" role="dialog" aria-modal="true" aria-labelledby="cartes-modal-title">
+    <button class="tcg-close" id="cartes-modal-close" aria-label="Fermer">✕</button>
+
+    <div class="tcg-view tcg-view-boosters is-active" id="tcg-view-boosters">
+      <div class="tcg-header">
+        <h2 id="cartes-modal-title">Collection de cartes</h2>
+        <p>Un projet de cartes à collectionner : mathématiciens et mathématiciennes, outils de l'année, démonstrations à connaître. Choisis un booster pour l'ouvrir.</p>
+      </div>
+      <div class="tcg-boosters" id="tcg-boosters"><!-- boosters générés en JS --></div>
+    </div>
+
+    <div class="tcg-view tcg-view-cards" id="tcg-view-cards">
+      <div class="tcg-cards-header">
+        <button class="tcg-back" id="tcg-back-btn">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          Boosters
+        </button>
+        <h3 id="tcg-cards-title">Booster</h3>
+      </div>
+      <div class="tcg-cards-grid" id="tcg-cards-grid"><!-- cartes générées en JS --></div>
+    </div>
   </div>
 </div>
 
@@ -2387,6 +2704,128 @@ h1.hero-title{
       contactButton.setAttribute('aria-expanded', 'false');
     }
   });
+
+  // ============ Modale "Cartes à collectionner" — univers TCG ============
+  (function(){
+    const overlay = document.getElementById('cartes-overlay');
+    const openBtn = document.getElementById('open-cartes-modal');
+    const closeBtn = document.getElementById('cartes-modal-close');
+    const viewBoosters = document.getElementById('tcg-view-boosters');
+    const viewCards = document.getElementById('tcg-view-cards');
+    const boostersEl = document.getElementById('tcg-boosters');
+    const cardsGrid = document.getElementById('tcg-cards-grid');
+    const cardsTitle = document.getElementById('tcg-cards-title');
+    const backBtn = document.getElementById('tcg-back-btn');
+    if (!overlay || !openBtn) return;
+
+    const icoMaths = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.4 3.6-7 8-7s8 2.6 8 7"/></svg>';
+    const icoOutils = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 1 0-5.4 5.4L3 18v3h3l6.3-6.3a4 4 0 0 0 5.4-5.4z"/></svg>';
+    const icoDemo = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3H5a2 2 0 0 0-2 2v4M15 3h4a2 2 0 0 1 2 2v4M9 21H5a2 2 0 0 1-2-2v-4M15 21h4a2 2 0 0 0 2-2v-4"/></svg>';
+
+    const boosterSets = [
+      {
+        key: 'mathematiciens',
+        title: 'Mathématiciens & mathématiciennes',
+        cls: 'tcg-booster-mathematiciens',
+        icon: icoMaths,
+        cards: [
+          { name: 'Thalès', type: 'Géométrie · Antiquité', rarity: 'commune', art: '📐' },
+          { name: 'Pythagore', type: 'Géométrie · Antiquité', rarity: 'rare', art: '🔺' },
+          { name: 'Al-Khwârizmî', type: 'Algèbre · IXe siècle', rarity: 'rare', art: '📜' },
+          { name: 'René Descartes', type: 'Repérage · XVIIe siècle', rarity: 'epique', art: '🧭' },
+          { name: 'Sophie Germain', type: 'Arithmétique · XIXe siècle', rarity: 'epique', art: '🔢' },
+          { name: 'Emmy Noether', type: 'Algèbre · XXe siècle', rarity: 'legendaire', art: '✨' },
+        ]
+      },
+      {
+        key: 'outils',
+        title: "Outils & objets de l'année",
+        cls: 'tcg-booster-outils',
+        icon: icoOutils,
+        cards: [
+          { name: 'La calculatrice', type: 'Outil de calcul', rarity: 'commune', art: '🧮' },
+          { name: 'Le compas', type: 'Outil de tracé', rarity: 'commune', art: '📐' },
+          { name: 'La droite graduée', type: 'Représentation', rarity: 'rare', art: '📏' },
+          { name: 'GeoGebra', type: 'Logiciel de géométrie', rarity: 'rare', art: '💻' },
+          { name: 'Python', type: 'Langage de programmation', rarity: 'epique', art: '🐍' },
+          { name: "L'arbre pondéré", type: 'Représentation · Probabilités', rarity: 'epique', art: '🌳' },
+        ]
+      },
+      {
+        key: 'demonstrations',
+        title: 'Démonstrations à connaître',
+        cls: 'tcg-booster-demonstrations',
+        icon: icoDemo,
+        cards: [
+          { name: '√2 est irrationnel', type: 'Nombres réels', rarity: 'rare', art: '√' },
+          { name: '1/3 n\'est pas décimal', type: 'Nombres réels', rarity: 'commune', art: '⅓' },
+          { name: '√(ab) = √a × √b', type: 'Calcul algébrique', rarity: 'rare', art: '∙' },
+          { name: 'Somme de deux multiples', type: 'Arithmétique', rarity: 'epique', art: '➕' },
+          { name: 'Carré d\'un nombre impair', type: 'Arithmétique', rarity: 'epique', art: '²' },
+          { name: 'Colinéarité par le déterminant', type: 'Vecteurs', rarity: 'legendaire', art: '⟂' },
+        ]
+      }
+    ];
+
+    function renderBoosters(){
+      boostersEl.innerHTML = boosterSets.map(set => `
+        <button type="button" class="tcg-booster ${set.cls}" data-set="${set.key}">
+          <span class="tcg-booster-icon">${set.icon}</span>
+          <span>${set.title}</span>
+          <small>${set.cards.length} cartes</small>
+        </button>
+      `).join('');
+      boostersEl.querySelectorAll('.tcg-booster').forEach(btn => {
+        btn.addEventListener('click', () => openBooster(btn.getAttribute('data-set')));
+      });
+    }
+
+    function openBooster(key){
+      const set = boosterSets.find(s => s.key === key);
+      if (!set) return;
+      cardsTitle.textContent = set.title;
+      cardsGrid.innerHTML = set.cards.map(card => `
+        <div class="tcg-card rarity-${card.rarity}">
+          <div class="tcg-card-inner">
+            <span class="tcg-card-rarity rarity-${card.rarity}">${card.rarity}</span>
+            <div class="tcg-card-art">${card.art}</div>
+            <div class="tcg-card-body">
+              <p class="tcg-card-name">${card.name}</p>
+              <p class="tcg-card-type">${card.type}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+      viewBoosters.classList.remove('is-active');
+      viewCards.classList.add('is-active');
+    }
+
+    function showBoosters(){
+      viewCards.classList.remove('is-active');
+      viewBoosters.classList.add('is-active');
+    }
+
+    function openModal(){
+      renderBoosters();
+      showBoosters();
+      overlay.classList.add('is-open');
+      overlay.setAttribute('aria-hidden', 'false');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      overlay.classList.remove('is-open');
+      overlay.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+    }
+
+    openBtn.addEventListener('click', openModal);
+    closeBtn.addEventListener('click', closeModal);
+    backBtn.addEventListener('click', showBoosters);
+    overlay.addEventListener('click', (e) => { if (e.target === overlay) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
+    });
+  })();
 </script>
 
 </body>
