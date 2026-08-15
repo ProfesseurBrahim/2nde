@@ -491,6 +491,27 @@ h1.hero-title{
 }
 .seq-track::-webkit-scrollbar{ display:none; }
 
+.seq-scrollbar{
+  position:relative;
+  height:6px;
+  border-radius:3px;
+  background:rgba(255,255,255,0.08);
+  margin:0 6px 4px;
+  cursor:pointer;
+}
+.seq-scrollbar-thumb{
+  position:absolute;
+  top:0; left:0;
+  height:100%;
+  border-radius:3px;
+  background:var(--accent);
+  cursor:grab;
+  transition:background 0.2s;
+}
+.seq-scrollbar-thumb:hover,
+.seq-scrollbar-thumb.dragging{ background:#3DB4FF; }
+.seq-scrollbar-thumb.dragging{ cursor:grabbing; }
+
 /* Variante "pleine largeur" pour la section Transversale : grille sur grand écran, carrousel sinon */
 @media (min-width:901px){
   .seq-track.full-width{
@@ -1060,23 +1081,10 @@ h1.hero-title{
 
     <div class="seq-track" id="seq-track">
 
-      <a class="seq-card v1" href="#">
+      <a class="seq-card v1" href="#" data-chapter-id="seq1">
         <span class="seq-tag"><span class="n">01</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Calcul littéral</h3>
-        <p class="seq-desc">Développement, factorisation, identités remarquables et calcul avec des expressions littérales.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="images/Calcul littéral.png" alt="Calcul littéral"></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
-      <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">02</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Fractions, puissances, racines carrées</h3>
-        <p class="seq-desc">Opérations sur les fractions, règles de calcul sur les puissances et les racines carrées.</p>
+        <h3>Nombres réels et intervalles</h3>
+        <p class="seq-desc">Ensembles de nombres, intervalles de ℝ et valeur absolue pour mesurer une distance.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1086,10 +1094,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">03</span><span class="cat-label">Géométrie</span></span>
-        <h3>Les vecteurs 1/2</h3>
-        <p class="seq-desc">Translation, notion de vecteur, égalité de vecteurs et somme de deux vecteurs.</p>
+      <a class="seq-card v2" href="#" data-chapter-id="seq2">
+        <span class="seq-tag"><span class="n">02</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Fonctions : représentation graphique</h3>
+        <p class="seq-desc">Notion de fonction, domaine de définition et courbe représentative dans le plan.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1099,10 +1107,23 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
+      <a class="seq-card v3" href="#" data-chapter-id="seq3">
+        <span class="seq-tag"><span class="n">03</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
+        <h3>Calcul algébrique</h3>
+        <p class="seq-desc">Calcul sur les puissances, les racines carrées et comparaison de deux quantités.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v1" href="#" data-chapter-id="seq4">
         <span class="seq-tag"><span class="n">04</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Nombres réels 1/2</h3>
-        <p class="seq-desc">Ensembles de nombres, intervalles et introduction aux nombres réels.</p>
+        <h3>Équations et inéquations</h3>
+        <p class="seq-desc">Résolution d'équations et d'inéquations du premier degré, équations produit et quotient.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1112,10 +1133,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v2" href="#">
+      <a class="seq-card v2" href="#" data-chapter-id="seq5">
         <span class="seq-tag"><span class="n">05</span><span class="cat-label">Géométrie</span></span>
-        <h3>Les vecteurs 2/2</h3>
-        <p class="seq-desc">Coordonnées d'un vecteur, colinéarité et applications aux configurations du plan.</p>
+        <h3>Vecteurs (Partie 1)</h3>
+        <p class="seq-desc">Égalité de vecteurs, produit par un réel et combinaison de deux vecteurs non colinéaires.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1125,36 +1146,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
+      <a class="seq-card v3" href="#" data-chapter-id="seq6">
         <span class="seq-tag"><span class="n">06</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Nombres réels 2/2</h3>
-        <p class="seq-desc">Valeur absolue, encadrements et approfondissement des propriétés des nombres réels.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
-      <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">07</span><span class="cat-label cat-green">Fonctions</span></span>
-        <h3>Notion de fonction</h3>
-        <p class="seq-desc">Notion de fonction, image, antécédent, courbe représentative, variations.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
-      <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">08</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
         <h3>Arithmétique</h3>
-        <p class="seq-desc">Multiples, diviseurs, division euclidienne et nombres premiers.</p>
+        <p class="seq-desc">Multiples, diviseurs, parité et fractions sous forme irréductible.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1164,10 +1159,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">09</span><span class="cat-label">Géométrie</span></span>
-        <h3>Vecteurs et repérage</h3>
-        <p class="seq-desc">Repère du plan, coordonnées, distances, milieu et alignement à l'aide des vecteurs.</p>
+      <a class="seq-card v1" href="#" data-chapter-id="seq7">
+        <span class="seq-tag"><span class="n">07</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Signe d'une fonction</h3>
+        <p class="seq-desc">Signe d'une fonction affine et tableaux de signes pour un produit ou un quotient.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1177,10 +1172,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">10</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Équations</h3>
-        <p class="seq-desc">Résolution d'équations du premier degré et mise en équation de problèmes.</p>
+      <a class="seq-card v2" href="#" data-chapter-id="seq8">
+        <span class="seq-tag"><span class="n">08</span><span class="cat-label">Géométrie</span></span>
+        <h3>Vecteurs et coordonnées (Partie 1)</h3>
+        <p class="seq-desc">Coordonnées d'un vecteur dans une base orthonormée et calcul de distances.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1190,10 +1185,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">11</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
-        <h3>Information chiffrée</h3>
-        <p class="seq-desc">Proportions, pourcentages, évolutions et indices pour analyser des données chiffrées.</p>
+      <a class="seq-card v3" href="#" data-chapter-id="seq9">
+        <span class="seq-tag"><span class="n">09</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Fonctions de référence</h3>
+        <p class="seq-desc">Fonctions valeur absolue, carré et inverse : définitions, courbes et signe.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1203,10 +1198,36 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
+      <a class="seq-card v1" href="#" data-chapter-id="seq10">
+        <span class="seq-tag"><span class="n">10</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
+        <h3>Statistiques (Partie 1)</h3>
+        <p class="seq-desc">Pourcentages, évolutions successives et indicateurs de dispersion d'une série.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v2" href="#" data-chapter-id="seq11">
+        <span class="seq-tag"><span class="n">11</span><span class="cat-label">Géométrie</span></span>
+        <h3>Vecteurs et coordonnées (Partie 2)</h3>
+        <p class="seq-desc">Déterminant de deux vecteurs et critère de colinéarité pour alignement et parallélisme.</p>
+        <div class="seq-meta">
+          <div class="seq-thumb"><img src="" alt=""></div>
+          <span class="seq-cta">Ouvrir le chapitre
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </span>
+        </div>
+        <div class="seq-visual"></div>
+      </a>
+
+      <a class="seq-card v3" href="#" data-chapter-id="seq12">
         <span class="seq-tag"><span class="n">12</span><span class="cat-label cat-green">Fonctions</span></span>
-        <h3>Les fonctions de référence</h3>
-        <p class="seq-desc">Fonctions affines, carré et inverse : propriétés et représentations.</p>
+        <h3>Variations d'une fonction (Partie 1)</h3>
+        <p class="seq-desc">Sens de variation d'une fonction, tableau de variations et extremums.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1216,10 +1237,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
+      <a class="seq-card v1" href="#" data-chapter-id="seq13">
         <span class="seq-tag"><span class="n">13</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
-        <h3>Statistiques</h3>
-        <p class="seq-desc">Indicateurs de position et de dispersion, représentations, comparaison de séries.</p>
+        <h3>Probabilités (Partie 1)</h3>
+        <p class="seq-desc">Probabilité conditionnelle et arbres pondérés pour organiser un calcul.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1229,10 +1250,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v2" href="#">
-        <span class="seq-tag"><span class="n">14</span><span class="cat-label cat-green">Fonctions</span></span>
-        <h3>Variations d'une fonction</h3>
-        <p class="seq-desc">Tableaux de variations, extremums et lecture graphique des variations.</p>
+      <a class="seq-card v2" href="#" data-chapter-id="seq14">
+        <span class="seq-tag"><span class="n">14</span><span class="cat-label">Géométrie</span></span>
+        <h3>Droites du plan (Partie 1)</h3>
+        <p class="seq-desc">Équation de droite, vecteur directeur et pente d'une droite du plan.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1242,10 +1263,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">15</span><span class="cat-label cat-red">Nombres et calculs, algèbre</span></span>
-        <h3>Inéquations</h3>
-        <p class="seq-desc">Résolution algébrique et graphique d'inéquations du premier degré.</p>
+      <a class="seq-card v3" href="#" data-chapter-id="seq15">
+        <span class="seq-tag"><span class="n">15</span><span class="cat-label">Géométrie</span></span>
+        <h3>Droites du plan (Partie 2)</h3>
+        <p class="seq-desc">Parallélisme, intersection de droites et forme générale d'une équation.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1255,10 +1276,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v1" href="#">
-        <span class="seq-tag"><span class="n">16</span><span class="cat-label">Géométrie</span></span>
-        <h3>Droites du plan</h3>
-        <p class="seq-desc">Équations de droites, coefficient directeur, parallélisme et perpendicularité.</p>
+      <a class="seq-card v1" href="#" data-chapter-id="seq16">
+        <span class="seq-tag"><span class="n">16</span><span class="cat-label cat-green">Fonctions</span></span>
+        <h3>Variations d'une fonction (Partie 2)</h3>
+        <p class="seq-desc">Variations des fonctions de référence et interprétation du coefficient directeur.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1268,23 +1289,10 @@ h1.hero-title{
         <div class="seq-visual"></div>
       </a>
 
-      <a class="seq-card v2" href="#">
+      <a class="seq-card v2" href="#" data-chapter-id="seq17">
         <span class="seq-tag"><span class="n">17</span><span class="cat-label cat-purple">Statistiques &amp; probabilités</span></span>
-        <h3>Probabilités</h3>
-        <p class="seq-desc">Expérience aléatoire, probabilité d'un événement, arbres pondérés.</p>
-        <div class="seq-meta">
-          <div class="seq-thumb"><img src="" alt=""></div>
-          <span class="seq-cta">Ouvrir le chapitre
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
-          </span>
-        </div>
-        <div class="seq-visual"></div>
-      </a>
-
-      <a class="seq-card v3" href="#">
-        <span class="seq-tag"><span class="n">18</span><span class="cat-label">Géométrie</span></span>
-        <h3>Systèmes d'équations et droites</h3>
-        <p class="seq-desc">Résolution de systèmes d'équations et lien avec les intersections de droites.</p>
+        <h3>Probabilités (Partie 2)</h3>
+        <p class="seq-desc">Loi des grands nombres et probabilités conditionnelles dans un arbre pondéré.</p>
         <div class="seq-meta">
           <div class="seq-thumb"><img src="" alt=""></div>
           <span class="seq-cta">Ouvrir le chapitre
@@ -1295,6 +1303,10 @@ h1.hero-title{
       </a>
 
     </div>
+
+      <div class="seq-scrollbar" id="seq-scrollbar">
+        <div class="seq-scrollbar-thumb" id="seq-scrollbar-thumb"></div>
+      </div>
     </div>
    </div>
   </section>
@@ -1525,6 +1537,86 @@ h1.hero-title{
   document.getElementById('seq-next').addEventListener('click', () => track.scrollBy({ left: cardWidth(), behavior: 'smooth' }));
   document.getElementById('seq-prev').addEventListener('click', () => track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }));
 
+  // Barre de défilement personnalisée sous le carrousel des séquences
+  (function(){
+    const bar = document.getElementById('seq-scrollbar');
+    const thumb = document.getElementById('seq-scrollbar-thumb');
+    if (!bar || !thumb) return;
+
+    function updateThumb(){
+      const trackWidth = track.scrollWidth;
+      const visibleWidth = track.clientWidth;
+      const barWidth = bar.clientWidth;
+      if (trackWidth <= visibleWidth){ bar.style.display = 'none'; return; }
+      bar.style.display = 'block';
+      const thumbWidth = Math.max(40, (visibleWidth / trackWidth) * barWidth);
+      const maxThumbLeft = barWidth - thumbWidth;
+      const maxScroll = trackWidth - visibleWidth;
+      const ratio = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      thumb.style.width = thumbWidth + 'px';
+      thumb.style.left = (ratio * maxThumbLeft) + 'px';
+    }
+
+    track.addEventListener('scroll', updateThumb);
+    window.addEventListener('resize', updateThumb);
+    updateThumb();
+
+    let dragging = false, dragStartX = 0, dragStartLeft = 0;
+
+    function scrollFromThumbLeft(thumbLeft){
+      const barWidth = bar.clientWidth;
+      const thumbWidth = thumb.offsetWidth;
+      const maxThumbLeft = barWidth - thumbWidth;
+      const maxScroll = track.scrollWidth - track.clientWidth;
+      const ratio = maxThumbLeft > 0 ? thumbLeft / maxThumbLeft : 0;
+      track.scrollLeft = ratio * maxScroll;
+    }
+
+    thumb.addEventListener('mousedown', (e) => {
+      dragging = true;
+      thumb.classList.add('dragging');
+      dragStartX = e.clientX;
+      dragStartLeft = thumb.offsetLeft;
+      e.preventDefault();
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (!dragging) return;
+      const barWidth = bar.clientWidth;
+      const thumbWidth = thumb.offsetWidth;
+      let newLeft = dragStartLeft + (e.clientX - dragStartX);
+      newLeft = Math.max(0, Math.min(barWidth - thumbWidth, newLeft));
+      scrollFromThumbLeft(newLeft);
+    });
+    window.addEventListener('mouseup', () => {
+      if (!dragging) return;
+      dragging = false;
+      thumb.classList.remove('dragging');
+    });
+
+    bar.addEventListener('click', (e) => {
+      if (e.target === thumb) return;
+      const barRect = bar.getBoundingClientRect();
+      const clickX = e.clientX - barRect.left;
+      scrollFromThumbLeft(clickX - thumb.offsetWidth / 2);
+    });
+
+    // Support tactile
+    thumb.addEventListener('touchstart', (e) => {
+      dragging = true;
+      dragStartX = e.touches[0].clientX;
+      dragStartLeft = thumb.offsetLeft;
+    }, { passive:true });
+    window.addEventListener('touchmove', (e) => {
+      if (!dragging) return;
+      const barWidth = bar.clientWidth;
+      const thumbWidth = thumb.offsetWidth;
+      let newLeft = dragStartLeft + (e.touches[0].clientX - dragStartX);
+      newLeft = Math.max(0, Math.min(barWidth - thumbWidth, newLeft));
+      scrollFromThumbLeft(newLeft);
+    }, { passive:true });
+    window.addEventListener('touchend', () => { dragging = false; });
+  })();
+
   const resTrack = document.getElementById('res-track');
   const resCardWidth = () => resTrack.querySelector('.res-card').getBoundingClientRect().width + 20;
   document.getElementById('res-next').addEventListener('click', () => resTrack.scrollBy({ left: resCardWidth(), behavior: 'smooth' }));
@@ -1641,6 +1733,338 @@ h1.hero-title{
 
     // Contenu spécifique tiré du programme officiel 2026, pour certains chapitres identifiés par data-chapter-id
     const chapterOverrides = {
+      'seq1': {
+        contenu: {
+          lead: 'Ensembles de nombres, droite numérique et intervalles de ℝ.',
+          items: [
+            'Ensemble ℚ des nombres rationnels. Nombres irrationnels ; exemples fournis par la géométrie, par exemple √2 et π.',
+            'Ensemble 𝔻 des nombres décimaux. Encadrement décimal d\'un nombre réel à 10⁻ⁿ près.',
+            'Ensemble ℝ des nombres réels, droite numérique.',
+            'Intervalles de ℝ. Représentation graphique, notations du type [a, +∞[, ] –∞, a], [a, b], etc.',
+            'Notation en valeur absolue |a| pour la distance de a à 0. Distance entre deux nombres réels.',
+            'Inéquation du type |x – a| ⩽ r. Représentation graphique des solutions, intervalle [a – r, a + r].'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Lire l\'abscisse d\'un nombre réel sur une droite graduée et placer un nombre réel d\'abscisse donnée.',
+            'Donner un encadrement, d\'amplitude donnée, d\'un nombre réel par des décimaux.',
+            'Dans le cadre de la résolution de problèmes, arrondir en donnant le nombre de chiffres significatifs adapté à la situation.',
+            'Représenter un intervalle de la droite numérique ; déterminer si un nombre réel appartient à un intervalle donné.'
+          ]
+        },
+        demonstrations: [
+          'Le nombre rationnel 1/3 n\'est pas décimal.',
+          'Le nombre réel √2 est irrationnel.'
+        ],
+        commentaires: 'Chapitre d\'ouverture de l\'année : il pose le vocabulaire et les notations (ensembles, intervalles, valeur absolue) réinvestis dans tous les chapitres suivants.'
+      },
+      'seq2': {
+        contenu: {
+          lead: 'Notion de fonction et lecture d\'une courbe représentative.',
+          items: [
+            'Fonction à valeurs réelles définie sur un intervalle ou une réunion finie d\'intervalles de ℝ.',
+            'Recherche de domaine d\'étude (ensemble de définition).',
+            'Courbe représentative : la courbe d\'équation y = f(x) est l\'ensemble des points du plan dont les coordonnées (x, y) vérifient y = f(x).'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Exploiter l\'équation y = f(x) d\'une courbe : appartenance, calcul de coordonnées.',
+            'Résoudre, graphiquement ou à l\'aide d\'un outil numérique, une équation ou inéquation du type f(x)=g(x), f(x)<g(x).',
+            'Modéliser par des fonctions des situations issues des mathématiques, des autres disciplines ou de la vie courante ou citoyenne (activité d\'introduction « l\'enclos »).'
+          ]
+        },
+        commentaires: 'Première rencontre avec la notion de fonction : privilégier une entrée par une activité de modélisation (par exemple « l\'enclos ») avant de formaliser le vocabulaire.'
+      },
+      'seq3': {
+        contenu: {
+          lead: 'Calcul sur les expressions algébriques, les puissances et les racines carrées.',
+          items: [
+            'Exemples simples de calcul sur des expressions algébriques, en particulier sur des expressions fractionnaires.',
+            'Règles de calcul sur les puissances entières relatives, sur les racines carrées. Relation √(a²) = |a|.',
+            'Comparaison additive (par différence), comparaison multiplicative (par rapport, pour deux nombres strictement positifs).'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Effectuer des calculs numériques ou littéraux mettant en jeu des puissances, des racines carrées, des écritures fractionnaires.',
+            'Comparer deux quantités en utilisant leur différence, ou leur rapport (ratio) ; interpréter cette comparaison en termes de variation additive ou multiplicative.'
+          ]
+        },
+        demonstrations: [
+          'Quels que soient les réels positifs a et b, on a : √(ab) = √a × √b.'
+        ]
+      },
+      'seq4': {
+        contenu: {
+          lead: 'Équations et inéquations du premier degré, équations produit et quotient.',
+          items: [
+            'Ensemble des solutions des équations du type ax + b = 0, et des inéquations de la forme ax + b > 0.',
+            'Équation de la forme A(x)B(x) = 0 (équation produit nul).',
+            'Somme d\'inégalités. Produit d\'une inégalité par un réel positif, négatif, en liaison avec le sens de variation d\'une fonction affine.',
+            'Équation A(x) / B(x) = k (équation quotient) en lien avec l\'ensemble de définition d\'une expression.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Donner l\'ensemble des solutions d\'une équation ou d\'une inéquation du premier degré, d\'une équation du type x² = a.',
+            'Sur des cas simples de relations entre variables (ex. U=RI, d=vt, S=πr², V=abc, V=πr²h), exprimer une variable en fonction des autres ; cas d\'une relation du premier degré ax+by=c.',
+            'Modéliser un problème par une inéquation.',
+            'Choisir la forme la plus adaptée (factorisée, développée réduite) d\'une expression en vue de la résolution d\'un problème.'
+          ]
+        }
+      },
+      'seq5': {
+        contenu: {
+          lead: 'Vecteurs : égalité, produit par un réel et colinéarité.',
+          items: [
+            'Égalité de deux vecteurs. Notation u⃗. Vecteur nul 0⃗.',
+            'Représentants d\'un vecteur.',
+            'Produit d\'un vecteur par un nombre réel. Colinéarité de deux vecteurs.',
+            'Caractérisation vectorielle du milieu d\'un segment.',
+            'Représentation d\'un vecteur comme combinaison de deux vecteurs non colinéaires.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Représenter la somme de deux vecteurs à partir de représentants de même origine.',
+            'Résoudre des problèmes avec des méthodes diverses (méthodes vectorielles, repérées ou non, méthodes géométriques).'
+          ]
+        }
+      },
+      'seq6': {
+        contenu: {
+          lead: 'Multiples, diviseurs et parité dans ℕ et ℤ.',
+          items: [
+            'Définition des notions de multiple, de diviseur, de nombre pair, de nombre impair : a est multiple de b s\'il existe un entier k tel que a = kb.',
+            'Notations ℕ et ℤ.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Modéliser et résoudre des problèmes mobilisant les notions de multiple, de diviseur, de nombre pair, de nombre impair.',
+            'Présenter les fractions sous forme irréductible.'
+          ]
+        },
+        demonstrations: [
+          'Pour une valeur numérique de a, la somme de deux multiples de a est multiple de a.',
+          'Le carré d\'un nombre impair est impair.'
+        ]
+      },
+      'seq7': {
+        contenu: {
+          lead: 'Signe d\'une fonction affine, d\'un produit ou d\'un quotient.',
+          items: [
+            'Signe d\'une fonction affine.',
+            'Tableau de signes pour une fonction produit ou quotient.',
+            'En liaison avec la section « Fonctions », étude du signe des expressions de la forme A(x)B(x) et A(x) / B(x).'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Pour une fonction affine, relier sens de variation, signe de la fonction et droite représentative.',
+            'Résoudre une équation ou une inéquation du type f(x)=0, f(x)>0 à l\'aide d\'un tableau de signes, lorsque f est un produit ou un quotient.'
+          ]
+        }
+      },
+      'seq8': {
+        contenu: {
+          lead: 'Coordonnées d\'un vecteur dans une base orthonormée.',
+          items: [
+            'Expression des coordonnées du vecteur AB⃗ en fonction de celles de A et de B.',
+            'Base orthonormée. Coordonnées d\'un vecteur. Expression de la norme d\'un vecteur.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Représenter un vecteur dont on connaît les coordonnées ; lire les coordonnées d\'un vecteur.',
+            'Calculer les coordonnées d\'une somme de vecteurs, d\'un produit d\'un vecteur par un nombre réel.',
+            'Calculer la distance entre deux points ; calculer les coordonnées du milieu d\'un segment.',
+            'Résoudre des problèmes en utilisant la représentation la plus adaptée des vecteurs.'
+          ]
+        }
+      },
+      'seq9': {
+        contenu: {
+          lead: 'Fonctions de référence : valeur absolue, carré, inverse.',
+          items: [
+            'Connaître les fonctions valeur absolue, carré, inverse : définitions et courbes représentatives.',
+            'Signe des fonctions de référence.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Résoudre une équation ou une inéquation du type f(x)=k, f(x)<k, en choisissant une méthode adaptée (graphique, algébrique, logicielle).',
+            'Pour deux nombres a et b donnés et une fonction de référence f, comparer f(a) et f(b) numériquement ou graphiquement.'
+          ]
+        },
+        demonstrations: [
+          'Position relative des courbes d\'équation y=x, y=x², pour x ⩾ 0.'
+        ]
+      },
+      'seq10': {
+        contenu: {
+          lead: 'Pourcentages, évolutions et indicateurs de dispersion.',
+          items: [
+            'Proportions : ensembles de référence inclus les uns dans les autres ; pourcentage de pourcentage.',
+            'Évolution : variation absolue (variation additive) V2 – V1, coefficient multiplicateur (variation multiplicative) V2 / V1, variation relative (V2–V1) / V1 (taux d\'évolution).',
+            'Évolutions successives, évolution réciproque : relation sur les coefficients multiplicateurs (produit, inverse).',
+            'Linéarité de la moyenne.',
+            'Indicateurs de dispersion : écart type.',
+            'Influence sur la moyenne, la médiane de l\'ajout ou de la suppression d\'une valeur dans la série.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Traiter des situations simples mettant en jeu des pourcentages de pourcentages.',
+            'Exploiter la relation entre effectifs, proportions et pourcentages.',
+            'Calculer le taux d\'évolution global à partir des taux d\'évolution successifs ; calculer un taux d\'évolution réciproque.'
+          ]
+        }
+      },
+      'seq11': {
+        contenu: {
+          lead: 'Déterminant de deux vecteurs et critère de colinéarité.',
+          items: [
+            'Déterminant de deux vecteurs dans une base orthonormée.',
+            'Critère de colinéarité. Application à l\'alignement, au parallélisme.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Caractériser alignement et parallélisme par la colinéarité de vecteurs.'
+          ]
+        },
+        demonstrations: [
+          'Caractérisations de la colinéarité de deux vecteurs non nuls : nullité du déterminant ; proportionnalité des coordonnées.'
+        ]
+      },
+      'seq12': {
+        contenu: {
+          lead: 'Sens de variation d\'une fonction et tableau de variations.',
+          items: [
+            'Croissance, décroissance, monotonie d\'une fonction définie sur un intervalle. Tableau de variations.',
+            'Maximum, minimum d\'une fonction sur un intervalle.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Relier représentation graphique et tableau de variations.',
+            'Déterminer graphiquement les extrémums d\'une fonction sur un intervalle.',
+            'Exploiter un logiciel de géométrie dynamique ou de calcul formel, la calculatrice ou Python pour décrire les variations d\'une fonction donnée par une formule.',
+            'Traiter des problèmes d\'optimisation.'
+          ]
+        }
+      },
+      'seq13': {
+        contenu: {
+          lead: 'Probabilité conditionnelle et arbres pondérés.',
+          items: [
+            'Probabilité conditionnelle d\'un évènement B sachant un évènement A de probabilité non nulle. Notation Pₐ(B).',
+            'Arbres de probabilité, application au calcul de probabilités.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Construire un arbre pondéré ou un tableau en lien avec une situation donnée ; passer du registre de la langue naturelle au registre symbolique et inversement.',
+            'Calculer des probabilités conditionnelles lorsque les évènements sont présentés sous forme de tableau croisé d\'effectifs ou d\'arbre de probabilité.',
+            'Interpréter les pondérations de chaque branche d\'un arbre en termes de probabilités, notamment conditionnelles.'
+          ]
+        }
+      },
+      'seq14': {
+        contenu: {
+          lead: 'Équation de droite, vecteur directeur et pente.',
+          items: [
+            'Vecteur directeur d\'une droite.',
+            'Équation de droite : équation cartésienne, équation réduite.',
+            'Pente (ou coefficient directeur) d\'une droite non parallèle à l\'axe des ordonnées.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Tracer une droite connaissant son équation cartésienne ou réduite.',
+            'Déterminer une équation de droite à partir de deux points, d\'un point et un vecteur directeur, ou d\'un point et la pente.',
+            'Déterminer la pente ou un vecteur directeur d\'une droite donnée par une équation ou une représentation graphique.',
+            'Établir que trois points sont alignés ou non.',
+            'Déterminer si deux droites sont parallèles ou sécantes.',
+            'Déterminer le point d\'intersection de deux droites sécantes données par leur équation réduite.'
+          ]
+        },
+        demonstrations: [
+          'En utilisant le déterminant, établir la forme générale d\'une équation de droite.'
+        ]
+      },
+      'seq15': {
+        contenu: {
+          lead: 'Compléments sur les équations de droites.',
+          items: [
+            'Équation de droite : équation cartésienne, équation réduite.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Déterminer si deux droites sont parallèles ou sécantes.',
+            'Déterminer le point d\'intersection de deux droites sécantes données par leur équation réduite.'
+          ]
+        },
+        demonstrations: [
+          'En utilisant le déterminant, établir la forme générale d\'une équation de droite.'
+        ]
+      },
+      'seq16': {
+        contenu: {
+          lead: 'Variations des fonctions de référence et des fonctions affines.',
+          items: [
+            'Variations des fonctions de référence.',
+            'Variations d\'une fonction affine selon le signe du coefficient directeur.',
+            'Pour une fonction affine donnée par f(x) = mx + p, interprétation de m comme taux d\'accroissement et de p comme ordonnée à l\'origine.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Justifier le sens de variation d\'une fonction affine à partir du signe de son coefficient directeur.',
+            'Relier les variations d\'une fonction de référence (affine, carré, inverse) à sa représentation graphique.'
+          ]
+        },
+        demonstrations: [
+          'Variations des fonctions affines, carré, inverse.'
+        ]
+      },
+      'seq17': {
+        contenu: {
+          lead: 'Loi des grands nombres et probabilités conditionnelles.',
+          items: [
+            'Version vulgarisée de la loi des grands nombres : « Lorsque n est grand, sauf exception, la fréquence observée est proche de la probabilité. »',
+            'Arbres de probabilité, application au calcul de probabilités.'
+          ]
+        },
+        competences: {
+          lead: '',
+          items: [
+            'Observer la loi des grands nombres à l\'aide d\'une simulation sur Python ou tableur.',
+            'Faire le lien entre la définition des probabilités conditionnelles et la multiplication des probabilités des branches du chemin correspondant.',
+            'Distinguer en situation Pₐ(B) et P_B(A), par exemple dans des situations de type « faux positifs ».'
+          ]
+        }
+      },
       'transversale-vocabulaire': {
         contenu: {
           lead: 'Notions transversales à tous les chapitres du programme, à travailler d\'abord en situation puis à formaliser après plusieurs rencontres.',
@@ -1719,31 +2143,54 @@ h1.hero-title{
         ];
       }
 
-      return [
-        { group: 'Programme', items: [
-          { key:'contenu', label:'Contenu', icon:icoList, color:tints.blue,
-            render: () => override
-              ? renderBullets('Contenu du chapitre', override.contenu.lead, override.contenu.items)
-              : renderBullets('Contenu du chapitre',
-              `Notions abordées dans « ${title} ».`,
-              notions.length ? notions.map(n => n.charAt(0).toUpperCase() + n.slice(1)) : [desc]) },
-          { key:'competences', label:'Compétences', icon:icoTarget, color:tints.indigo,
-            render: () => override
-              ? renderBullets('Compétences visées', override.competences.lead, override.competences.items)
-              : renderBullets('Compétences visées',
-                'Ce que l\'élève doit savoir faire en fin de chapitre.',
-                [
-                `Connaître et utiliser le vocabulaire lié à « ${title.toLowerCase()} ».`,
-                'Appliquer les méthodes du cours dans des exercices guidés puis en autonomie.',
-                'Justifier un résultat en rédigeant une argumentation rigoureuse.',
-                'Mobiliser la notion dans un problème ou une situation concrète.'
+      // Structure allégée pour "Vocabulaire ensembliste et logique" : Contenu, Activités, Commentaires uniquement
+      if (chapterId === 'transversale-vocabulaire') {
+        const ov = chapterOverrides['transversale-vocabulaire'];
+        return [
+          { group: 'Programme', items: [
+            { key:'contenu', label:'Contenu', icon:icoList, color:tints.blue,
+              render: () => renderBullets('Contenu du chapitre', ov.contenu.lead, ov.contenu.items) },
+          ]},
+          { group: 'Ressources de cours', items: [
+            { key:'activites', label:'Activités', icon:icoFlask, color:tints.teal,
+              render: () => renderDocs('Activités', [
+                { title:'Activité d\'introduction', type:'Découverte de la notion', href:'#' },
+                { title:'Activité complémentaire', type:'Approfondissement', href:'#' },
               ]) },
-          { key:'demonstrations', label:'Démonstrations', icon:icoSigma, color:tints.indigo,
-            render: () => renderDocs('Démonstrations exigibles', [
-              { title:'Démonstration 1', type:'À connaître', href:'#' },
-              { title:'Démonstration 2', type:'À connaître', href:'#' },
+          ]},
+          { group: 'Aller plus loin', items: [
+            { key:'commentaires', label:'Commentaires', icon:icoChat2, color:tints.slate,
+              render: () => renderNote('Commentaires', ov.commentaires) },
+          ]},
+        ];
+      }
+
+      const programmeItems = [
+        { key:'contenu', label:'Contenu', icon:icoList, color:tints.blue,
+          render: () => override
+            ? renderBullets('Contenu du chapitre', override.contenu.lead, override.contenu.items)
+            : renderBullets('Contenu du chapitre',
+            `Notions abordées dans « ${title} ».`,
+            notions.length ? notions.map(n => n.charAt(0).toUpperCase() + n.slice(1)) : [desc]) },
+        { key:'competences', label:'Compétences', icon:icoTarget, color:tints.indigo,
+          render: () => override
+            ? renderBullets('Compétences visées', override.competences.lead, override.competences.items)
+            : renderBullets('Compétences visées',
+              '',
+              [
+              `Connaître et utiliser le vocabulaire lié à « ${title.toLowerCase()} ».`,
+              'Appliquer les méthodes du cours dans des exercices guidés puis en autonomie.',
+              'Justifier un résultat en rédigeant une argumentation rigoureuse.',
+              'Mobiliser la notion dans un problème ou une situation concrète.'
             ]) },
-        ]},
+      ];
+      if (override && override.demonstrations) {
+        programmeItems.push({ key:'demonstrations', label:'Démonstrations', icon:icoSigma, color:tints.indigo,
+          render: () => renderBullets('Démonstrations exemplaires', '', override.demonstrations) });
+      }
+
+      return [
+        { group: 'Programme', items: programmeItems },
         { group: 'Ressources de cours', items: [
           { key:'cours', label:'Cours', icon:icoBook, color:tints.blue,
             render: () => renderDocs('Cours', [
@@ -1774,7 +2221,7 @@ h1.hero-title{
         { group: 'Aller plus loin', items: [
           { key:'prolongements', label:'Prolongements possibles', icon:icoCompass, color:tints.slate,
             render: () => renderBullets('Prolongements possibles',
-              'Pistes d\'ouverture pour aller au-delà du programme.',
+              '',
               [
                 'Lien avec un autre chapitre déjà vu ou à venir.',
                 'Application dans un contexte concret ou une autre discipline.',
@@ -1794,7 +2241,7 @@ h1.hero-title{
         <div class="chapter-content-head">
           <h4>${heading}</h4>
         </div>
-        <p class="chapter-content-lead">${lead}</p>
+        ${lead ? `<p class="chapter-content-lead">${lead}</p>` : ''}
         <ul class="chapter-bullets">
           ${items.map(i => `<li>${i}</li>`).join('')}
         </ul>
@@ -1837,7 +2284,6 @@ h1.hero-title{
         <div class="chapter-content-head">
           <h4>${cat.label}</h4>
         </div>
-        <p class="chapter-content-lead">Un lien par automatisme — à compléter avec ton document ou ton site.</p>
         <ul class="chapter-doc-list">
           ${cat.items.map(item => `
             <li>
