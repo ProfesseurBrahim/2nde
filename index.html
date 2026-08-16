@@ -1070,8 +1070,8 @@ h1.hero-title{
 
 .tcg-modal{
   position:relative;
-  width:min(96vw, 1080px);
-  height:min(88vh, 760px);
+  width:min(90vw, 920px);
+  height:min(82vh, 660px);
   border-radius:28px;
   overflow:hidden;
   background:
@@ -1095,11 +1095,12 @@ h1.hero-title{
   border:1px solid rgba(255,255,255,0.16);
   background:rgba(255,255,255,0.06);
   color:var(--white);
-  font-size:1rem;
   cursor:pointer;
+  padding:0;
   display:flex; align-items:center; justify-content:center;
   transition:border-color 0.2s, background 0.2s;
 }
+.tcg-close svg{ width:16px; height:16px; display:block; }
 .tcg-close:hover{ border-color:var(--accent); background:rgba(0,163,255,0.14); }
 
 .tcg-view{
@@ -1784,7 +1785,7 @@ h1.hero-title{
 
 <div id="cartes-overlay" aria-hidden="true">
   <div class="tcg-modal" role="dialog" aria-modal="true" aria-labelledby="cartes-modal-title">
-    <button class="tcg-close" id="cartes-modal-close" aria-label="Fermer">✕</button>
+    <button class="tcg-close" id="cartes-modal-close" aria-label="Fermer"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
 
     <div class="tcg-view tcg-view-boosters is-active" id="tcg-view-boosters">
       <div class="tcg-header">
