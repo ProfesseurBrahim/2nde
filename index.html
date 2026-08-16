@@ -1176,6 +1176,17 @@ h1.hero-title{
   position:absolute; inset:0;
   background:linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(0,0,0,0.55) 100%);
 }
+.tcg-booster-has-art::before{ display:none; }
+.tcg-booster-has-art{
+  background-color:transparent;
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  animation:none;
+  filter:brightness(1.08) saturate(1.18) drop-shadow(0 14px 22px rgba(0,0,0,0.5));
+  border-color:transparent;
+  box-shadow:none;
+}
 .tcg-booster-icon{
   position:absolute; top:20px; left:50%; transform:translateX(-50%);
   width:46px; height:46px;
@@ -1186,19 +1197,27 @@ h1.hero-title{
 }
 .tcg-booster-icon svg{ width:24px; height:24px; }
 .tcg-booster span{ position:relative; z-index:1; line-height:1.25; }
-.tcg-booster small{
-  position:relative; z-index:1;
-  display:block;
-  font-weight:600;
-  font-size:0.68rem;
-  text-transform:uppercase;
-  letter-spacing:0.08em;
-  color:rgba(255,255,255,0.75);
-  margin-top:4px;
+.tcg-booster-mathematiciens{
+  background-image:url('images/booster-mathematiciens.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  animation:none;
 }
-.tcg-booster-mathematiciens{ background-image:linear-gradient(135deg, #7A1FE0, #FF3D9A 60%, #FFD600); }
-.tcg-booster-outils{ background-image:linear-gradient(135deg, #007AFF, #00D4C0 60%, #7CFF6B); }
-.tcg-booster-demonstrations{ background-image:linear-gradient(135deg, #FF7A00, #FF3D3D 60%, #C400FF); }
+.tcg-booster-outils{
+  background-image:url('images/booster-outils.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  animation:none;
+}
+.tcg-booster-demonstrations{
+  background-image:url('images/booster-demonstrations.png');
+  background-size:contain;
+  background-repeat:no-repeat;
+  background-position:center;
+  animation:none;
+}
 
 .tcg-cards-header{
   display:flex; align-items:center; gap:16px;
@@ -2737,6 +2756,7 @@ h1.hero-title{
         title: 'Mathématiciens & mathématiciennes',
         cls: 'tcg-booster-mathematiciens',
         icon: icoMaths,
+        hasArt: true,
         cards: [
           { name: 'Thalès', type: 'Géométrie · Antiquité', rarity: 'commune', art: '📐' },
           { name: 'Pythagore', type: 'Géométrie · Antiquité', rarity: 'rare', art: '🔺' },
@@ -2751,6 +2771,7 @@ h1.hero-title{
         title: "Outils & objets de l'année",
         cls: 'tcg-booster-outils',
         icon: icoOutils,
+        hasArt: true,
         cards: [
           { name: 'La calculatrice', type: 'Outil de calcul', rarity: 'commune', art: '🧮' },
           { name: 'Le compas', type: 'Outil de tracé', rarity: 'commune', art: '📐' },
@@ -2765,6 +2786,7 @@ h1.hero-title{
         title: 'Démonstrations à connaître',
         cls: 'tcg-booster-demonstrations',
         icon: icoDemo,
+        hasArt: true,
         cards: [
           { name: '√2 est irrationnel', type: 'Nombres réels', rarity: 'rare', art: '√' },
           { name: '1/3 n\'est pas décimal', type: 'Nombres réels', rarity: 'commune', art: '⅓' },
@@ -2778,10 +2800,8 @@ h1.hero-title{
 
     function renderBoosters(){
       boostersEl.innerHTML = boosterSets.map(set => `
-        <button type="button" class="tcg-booster ${set.cls}" data-set="${set.key}">
-          <span class="tcg-booster-icon">${set.icon}</span>
-          <span>${set.title}</span>
-          <small>${set.cards.length} cartes</small>
+        <button type="button" class="tcg-booster ${set.cls}${set.hasArt ? ' tcg-booster-has-art' : ''}" data-set="${set.key}">
+          ${set.hasArt ? '' : `<span class="tcg-booster-icon">${set.icon}</span><span>${set.title}</span>`}
         </button>
       `).join('');
       boostersEl.querySelectorAll('.tcg-booster').forEach(btn => {
