@@ -924,6 +924,13 @@ h1.hero-title{
   overflow-y:auto;
   padding:30px 36px 40px;
 }
+.chapter-content:has(.pdf-viewer){
+  padding-top:14px;
+  padding-bottom:14px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 .chapter-content-head{
   display:flex; align-items:center; gap:12px;
   margin-bottom:6px;
@@ -1345,11 +1352,15 @@ h1.hero-title{
 
 /* ============ Lecteur PDF intégré (section Cours) ============ */
 .pdf-viewer{
-  margin-top:16px;
+  margin-top:0;
   border-radius:14px;
   overflow:hidden;
   border:1px solid var(--line);
   background:rgba(255,255,255,0.02);
+  flex:1;
+  min-height:0;
+  display:flex;
+  flex-direction:column;
 }
 .pdf-viewer-bar{
   display:flex; align-items:center; justify-content:space-between;
@@ -1382,13 +1393,11 @@ h1.hero-title{
 .pdf-viewer-latex:hover{ background:rgba(140,255,107,0.18); border-color:#8CFF6B; }
 .pdf-viewer iframe{
   width:100%;
-  height:62vh;
+  flex:1;
+  min-height:0;
   border:0;
   display:block;
   background:#fff;
-}
-@media (max-width:640px){
-  .pdf-viewer iframe{ height:48vh; }
 }
 </style>
 </head>
