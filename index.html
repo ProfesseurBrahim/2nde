@@ -1254,22 +1254,39 @@ h1.hero-title{
   cursor:default;
   transition:transform 0.25s;
 }
+.tcg-card[data-zoom-img]{ cursor:zoom-in; }
 .tcg-card:hover{ transform:translateY(-6px) scale(1.03); }
 .tcg-card-inner{
+  position:relative;
   height:100%;
   border-radius:12px;
   background:linear-gradient(165deg, #171122, #0B0F17 70%);
   border:1px solid rgba(255,255,255,0.14);
-  display:flex; flex-direction:column;
   overflow:hidden;
 }
 .tcg-card-art{
-  flex:1;
+  position:absolute; inset:0;
   display:flex; align-items:center; justify-content:center;
   font-size:2.4rem;
   background:linear-gradient(160deg, rgba(255,255,255,0.10), rgba(255,255,255,0.02));
+  background-size:cover;
+  background-position:top center;
+  overflow:hidden;
 }
-.tcg-card-body{ padding:10px 12px 12px; }
+.tcg-card-art-img{
+  position:absolute; inset:0;
+  width:100%; height:100%;
+  object-fit:cover;
+  object-position:top center;
+  display:block;
+}
+.tcg-card-body{
+  position:absolute; left:0; right:0; bottom:0;
+  padding:10px 12px 12px;
+  background:rgba(10,12,20,0.55);
+  backdrop-filter:blur(3px);
+  -webkit-backdrop-filter:blur(3px);
+}
 .tcg-card-name{ font-weight:800; font-size:0.86rem; margin:0 0 3px; color:var(--white); }
 .tcg-card-type{ font-size:0.68rem; color:var(--grey); margin:0; }
 .tcg-card-rarity{
@@ -1290,6 +1307,88 @@ h1.hero-title{
 @media (max-width:640px){
   .tcg-view{ padding:60px 20px 24px; }
   .tcg-booster{ width:140px; height:210px; }
+}
+
+/* ============ Zoom carte plein écran avec effet tilt ============ */
+#tcg-zoom-overlay{
+  position:fixed; inset:0;
+  z-index:400;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(4,6,12,0.82);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  opacity:0;
+  pointer-events:none;
+  transition:opacity 0.25s;
+  cursor:zoom-out;
+}
+#tcg-zoom-overlay.is-open{ opacity:1; pointer-events:auto; }
+.tcg-zoom-stage{
+  perspective:1400px;
+}
+#tcg-zoom-img{
+  display:block;
+  max-height:92vh;
+  max-width:min(78vw, 720px);
+  border-radius:18px;
+  box-shadow:0 40px 90px rgba(0,0,0,0.6);
+  transform:scale(0.92);
+  opacity:0;
+  transition:transform 0.3s cubic-bezier(.2,.9,.25,1), opacity 0.3s;
+  will-change:transform;
+  cursor:default;
+}
+#tcg-zoom-overlay.is-open #tcg-zoom-img{ opacity:1; }
+@media (max-width:640px){
+  #tcg-zoom-img{ max-width:90vw; }
+}
+
+/* ============ Lecteur PDF intégré (section Cours) ============ */
+.pdf-viewer{
+  margin-top:16px;
+  border-radius:14px;
+  overflow:hidden;
+  border:1px solid var(--line);
+  background:rgba(255,255,255,0.02);
+}
+.pdf-viewer-bar{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:12px;
+  padding:10px 14px;
+  background:rgba(255,255,255,0.04);
+  border-bottom:1px solid var(--line);
+}
+.pdf-viewer-name{
+  font-size:0.82rem; font-weight:700; color:var(--white);
+  white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+}
+.pdf-viewer-actions{ display:flex; align-items:center; gap:8px; flex-shrink:0; }
+.pdf-viewer-download,
+.pdf-viewer-latex{
+  display:flex; align-items:center; gap:6px; flex-shrink:0;
+  font-size:0.76rem; font-weight:700; color:var(--accent);
+  text-decoration:none;
+  padding:6px 13px;
+  border-radius:999px;
+  border:1px solid rgba(0,163,255,0.35);
+  background:rgba(0,163,255,0.08);
+  transition:background 0.2s, border-color 0.2s;
+}
+.pdf-viewer-download svg,
+.pdf-viewer-latex svg{ width:14px; height:14px; }
+.pdf-viewer-download:hover,
+.pdf-viewer-latex:hover{ background:rgba(0,163,255,0.18); border-color:var(--accent); }
+.pdf-viewer-latex{ color:#8CFF6B; border-color:rgba(140,255,107,0.35); background:rgba(140,255,107,0.08); }
+.pdf-viewer-latex:hover{ background:rgba(140,255,107,0.18); border-color:#8CFF6B; }
+.pdf-viewer iframe{
+  width:100%;
+  height:62vh;
+  border:0;
+  display:block;
+  background:#fff;
+}
+@media (max-width:640px){
+  .pdf-viewer iframe{ height:48vh; }
 }
 </style>
 </head>
@@ -1808,6 +1907,12 @@ h1.hero-title{
   </div>
 </div>
 
+<div id="tcg-zoom-overlay" aria-hidden="true">
+  <div class="tcg-zoom-stage" id="tcg-zoom-stage">
+    <img id="tcg-zoom-img" src="" alt="">
+  </div>
+</div>
+
 <script>
   // Masquer la navbar au scroll vers le bas
   const nav = document.getElementById('nav');
@@ -2073,6 +2178,8 @@ h1.hero-title{
     // Contenu spécifique tiré du programme officiel 2026, pour certains chapitres identifiés par data-chapter-id
     const chapterOverrides = {
       'seq1': {
+        coursPdf: 'cours/Nombres reels et intervalles.pdf',
+        coursLatex: 'https://fr.overleaf.com/read/tvwwfwvrksvv#84aa50',
         contenu: {
           lead: 'Ensembles de nombres, droite numérique et intervalles de ℝ.',
           items: [
@@ -2535,7 +2642,9 @@ h1.hero-title{
         { group: 'Programme', items: programmeItems },
         { group: 'Ressources de cours', items: [
           { key:'cours', label:'Cours', icon:icoBook, color:tints.blue,
-            render: () => renderDocs('Cours', [
+            render: () => (override && override.coursPdf)
+              ? renderPdfViewer('Cours', override.coursPdf, null, override.coursLatex)
+              : renderDocs('Cours', [
               { title:'Cours complet', type:'Document de cours', href:'#' },
               { title:'Résumé / fiche de synthèse', type:'À garder sous la main', href:'#' },
             ]) },
@@ -2618,6 +2727,29 @@ h1.hero-title{
             </li>
           `).join('')}
         </ul>
+      `;
+    }
+
+    function renderPdfViewer(heading, pdfPath, fileName, latexUrl) {
+      const label = fileName || pdfPath.split('/').pop();
+      return `
+        <div class="pdf-viewer">
+          <div class="pdf-viewer-bar">
+            <span class="pdf-viewer-name">${label}</span>
+            <span class="pdf-viewer-actions">
+              ${latexUrl ? `
+              <a class="pdf-viewer-latex" href="${latexUrl}" target="_blank" rel="noopener">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7L4 12l5 5M15 7l5 5-5 5"/></svg>
+                LaTeX
+              </a>` : ''}
+              <a class="pdf-viewer-download" href="${pdfPath}" download>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+                Télécharger
+              </a>
+            </span>
+          </div>
+          <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+        </div>
       `;
     }
 
@@ -2759,12 +2891,12 @@ h1.hero-title{
         icon: icoMaths,
         hasArt: true,
         cards: [
-          { name: 'Thalès', type: 'Géométrie · Antiquité', rarity: 'commune', art: '📐' },
-          { name: 'Pythagore', type: 'Géométrie · Antiquité', rarity: 'rare', art: '🔺' },
-          { name: 'Al-Khwârizmî', type: 'Algèbre · IXe siècle', rarity: 'rare', art: '📜' },
-          { name: 'René Descartes', type: 'Repérage · XVIIe siècle', rarity: 'epique', art: '🧭' },
-          { name: 'Sophie Germain', type: 'Arithmétique · XIXe siècle', rarity: 'epique', art: '🔢' },
-          { name: 'Emmy Noether', type: 'Algèbre · XXe siècle', rarity: 'legendaire', art: '✨' },
+          { name: 'Thalès', type: 'Géométrie · Antiquité', rarity: 'commune', art: '📐', img: 'images/carte-thales.png' },
+          { name: 'Al-Khwârizmî', type: 'Algèbre · IXe siècle', rarity: 'rare', art: '📜', img: 'images/carte-al-khwarizmi.png' },
+          { name: 'René Descartes', type: 'Repérage · XVIIe siècle', rarity: 'epique', art: '🧭', img: 'images/carte-descartes.png' },
+          { name: 'Sophie Germain', type: 'Arithmétique · XIXe siècle', rarity: 'epique', art: '🔢', img: 'images/carte-sophie-germain.png' },
+          { name: 'Emmy Noether', type: 'Algèbre · XXe siècle', rarity: 'legendaire', art: '✨', img: 'images/carte-emmy-noether.png' },
+          { name: 'Pythagore', type: 'Géométrie · Antiquité', rarity: 'legendaire', art: '🔺', img: 'images/carte-pythagore.png' },
         ]
       },
       {
@@ -2774,12 +2906,12 @@ h1.hero-title{
         icon: icoOutils,
         hasArt: true,
         cards: [
-          { name: 'La calculatrice', type: 'Outil de calcul', rarity: 'commune', art: '🧮' },
-          { name: 'Le compas', type: 'Outil de tracé', rarity: 'commune', art: '📐' },
-          { name: 'La droite graduée', type: 'Représentation', rarity: 'rare', art: '📏' },
-          { name: 'GeoGebra', type: 'Logiciel de géométrie', rarity: 'rare', art: '💻' },
-          { name: 'Python', type: 'Langage de programmation', rarity: 'epique', art: '🐍' },
-          { name: "L'arbre pondéré", type: 'Représentation · Probabilités', rarity: 'epique', art: '🌳' },
+          { name: 'La calculatrice', type: 'Outil de calcul', rarity: 'commune', art: '🧮', img: 'images/carte-calculatrice.png' },
+          { name: 'Le compas', type: 'Outil de tracé', rarity: 'commune', art: '📐', img: 'images/carte-compas.png' },
+          { name: 'La droite graduée', type: 'Représentation', rarity: 'rare', art: '📏', img: 'images/carte-droite-graduee.png' },
+          { name: 'GeoGebra', type: 'Logiciel de géométrie', rarity: 'rare', art: '💻', img: 'images/carte-geogebra.png' },
+          { name: 'Python', type: 'Langage de programmation', rarity: 'epique', art: '🐍', img: 'images/carte-python.png' },
+          { name: "L'arbre pondéré", type: 'Représentation · Probabilités', rarity: 'epique', art: '🌳', img: 'images/carte-arbre-pondere.png' },
         ]
       },
       {
@@ -2789,15 +2921,15 @@ h1.hero-title{
         icon: icoDemo,
         hasArt: true,
         cards: [
-          { name: '1/3 n\'est pas décimal', type: 'Nombres réels', rarity: 'commune', art: '⅓' },
-          { name: 'Somme de deux multiples', type: 'Arithmétique', rarity: 'commune', art: '➕' },
-          { name: '√(ab) = √a × √b', type: 'Calcul algébrique', rarity: 'rare', art: '∙' },
-          { name: 'Carré d\'un nombre impair', type: 'Arithmétique', rarity: 'rare', art: '²' },
-          { name: 'Position des courbes y=x et y=x²', type: 'Fonctions de référence', rarity: 'rare', art: '⌒' },
-          { name: '√2 est irrationnel', type: 'Nombres réels', rarity: 'epique', art: '√' },
-          { name: 'Variations affine, carré, inverse', type: 'Fonctions', rarity: 'epique', art: '↗' },
-          { name: 'Équation de droite par le déterminant', type: 'Droites du plan', rarity: 'epique', art: '⟍' },
-          { name: 'Colinéarité par le déterminant', type: 'Vecteurs', rarity: 'legendaire', art: '⟂' },
+          { name: '1/3 n\'est pas décimal', type: 'Nombres réels', rarity: 'commune', art: '⅓', img: 'images/carte-demo-un-tiers.png' },
+          { name: 'Somme de deux multiples', type: 'Arithmétique', rarity: 'commune', art: '➕', img: 'images/carte-demo-somme-multiples.png' },
+          { name: '√(ab) = √a × √b', type: 'Calcul algébrique', rarity: 'rare', art: '∙', img: 'images/carte-demo-racine-produit.png' },
+          { name: 'Carré d\'un nombre impair', type: 'Arithmétique', rarity: 'rare', art: '²', img: 'images/carte-demo-carre-impair.png' },
+          { name: 'Position des courbes y=x et y=x²', type: 'Fonctions de référence', rarity: 'rare', art: '⌒', img: 'images/carte-demo-courbes.png' },
+          { name: '√2 est irrationnel', type: 'Nombres réels', rarity: 'epique', art: '√', img: 'images/demo-racine2.png' },
+          { name: 'Variations affine, carré, inverse', type: 'Fonctions', rarity: 'epique', art: '↗', img: 'images/carte-demo-variations.png' },
+          { name: 'Équation de droite par le déterminant', type: 'Droites du plan', rarity: 'epique', art: '⟍', img: 'images/carte-demo-droite-determinant.png' },
+          { name: 'Colinéarité par le déterminant', type: 'Vecteurs', rarity: 'legendaire', art: '⟂', img: 'images/carte-demo-colinearite.png' },
         ]
       }
     ];
@@ -2821,7 +2953,7 @@ h1.hero-title{
         <div class="tcg-card rarity-${card.rarity}">
           <div class="tcg-card-inner">
             <span class="tcg-card-rarity rarity-${card.rarity}">${card.rarity}</span>
-            <div class="tcg-card-art">${card.art}</div>
+            <div class="tcg-card-art">${card.art}${card.img ? `<img class="tcg-card-art-img" src="${card.img}" alt="${card.name}" onerror="this.remove()" onload="this.closest('.tcg-card').setAttribute('data-zoom-img', '${card.img}')">` : ''}</div>
             <div class="tcg-card-body">
               <p class="tcg-card-name">${card.name}</p>
               <p class="tcg-card-type">${card.type}</p>
@@ -2858,6 +2990,46 @@ h1.hero-title{
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape' && overlay.classList.contains('is-open')) closeModal();
     });
+
+    // Zoom d'une carte au clic, avec effet tilt qui suit la souris
+    const zoomOverlay = document.getElementById('tcg-zoom-overlay');
+    const zoomStage = document.getElementById('tcg-zoom-stage');
+    const zoomImg = document.getElementById('tcg-zoom-img');
+
+    cardsGrid.addEventListener('click', (e) => {
+      const cardEl = e.target.closest('.tcg-card');
+      if (!cardEl) return;
+      const imgSrc = cardEl.getAttribute('data-zoom-img');
+      if (!imgSrc) return;
+      zoomImg.src = imgSrc;
+      zoomImg.style.transform = 'scale(0.92) rotateX(0deg) rotateY(0deg)';
+      zoomOverlay.classList.add('is-open');
+      zoomOverlay.setAttribute('aria-hidden', 'false');
+    });
+
+    function closeZoom(){
+      zoomOverlay.classList.remove('is-open');
+      zoomOverlay.setAttribute('aria-hidden', 'true');
+      zoomImg.style.transform = 'scale(0.92) rotateX(0deg) rotateY(0deg)';
+    }
+
+    zoomOverlay.addEventListener('click', closeZoom);
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && zoomOverlay.classList.contains('is-open')) closeZoom();
+    });
+
+    zoomStage.addEventListener('mousemove', (e) => {
+      const rect = zoomImg.getBoundingClientRect();
+      const px = (e.clientX - rect.left) / rect.width;
+      const py = (e.clientY - rect.top) / rect.height;
+      const rotateY = (px - 0.5) * 22;
+      const rotateX = (0.5 - py) * 22;
+      zoomImg.style.transform = `scale(1.02) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+    zoomStage.addEventListener('mouseleave', () => {
+      zoomImg.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+    });
+    zoomImg.addEventListener('click', (e) => e.stopPropagation());
   })();
 </script>
 
