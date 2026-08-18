@@ -1399,8 +1399,27 @@ h1.hero-title{
   display:block;
   background:#fff;
 }
+
+/* Double lecteur PDF (Évaluation + Corrigé), avec défilement vertical global */
+.chapter-content:has(.pdf-viewer-dual){
+  padding-top:14px;
+  overflow-y:auto;
+}
+.pdf-viewer-dual{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+}
+.pdf-viewer-stacked{
+  flex:none;
+  height:56vh;
+}
+@media (max-width:640px){
+  .pdf-viewer-stacked{ height:44vh; }
+}
 </style>
 </head>
+
 
 <body>
 
@@ -2189,6 +2208,8 @@ h1.hero-title{
       'seq1': {
         coursPdf: 'cours/Nombres reels et intervalles.pdf',
         coursLatex: 'https://fr.overleaf.com/read/tvwwfwvrksvv#84aa50',
+        evalPdf: 'evaluations/Nombres reels et intervalles - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Nombres reels et intervalles - Correction.pdf',
         contenu: {
           lead: 'Ensembles de nombres, droite numérique et intervalles de ℝ.',
           items: [
@@ -2216,6 +2237,9 @@ h1.hero-title{
         commentaires: '<p>La valeur absolue d\'un nombre est maintenant définie en classe de 5e dans le nouveau programme de collège, mais on ne va pas au-delà de la définition. En 2de on ne va pas au-delà de la caractérisation d\'un intervalle de centre a. En revanche, la fonction valeur absolue est étudiée en tant que telle et intègre la liste des fonctions de référence (voir section Fonctions).</p><p>La valeur absolue d\'un nombre n\'aura pas été vue au collège : il faudra la définir en Seconde.</p><p>Les élèves n\'auront pas résolu les inéquations au collège : le travail sur les inéquations (dont l\'écriture des solutions utilisant des intervalles, en s\'appuyant sur la représentation sur la droite graduée) reste à mener en Seconde.</p><p>Même dans les nouveaux programmes, les intervalles ne seront pas abordés au collège.</p>'
       },
       'seq2': {
+        coursPdf: 'cours/Fonctions représentation graphique.pdf',
+        evalPdf: 'evaluations/Fonctions représentation graphique - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Fonctions représentation graphique - Correction.pdf',
         contenu: {
           lead: 'Notion de fonction et lecture d\'une courbe représentative.',
           items: [
@@ -2235,6 +2259,9 @@ h1.hero-title{
         commentaires: 'Première rencontre avec la notion de fonction : privilégier une entrée par une activité de modélisation (par exemple « l\'enclos ») avant de formaliser le vocabulaire.'
       },
       'seq3': {
+        coursPdf: 'cours/Calcul algébrique.pdf',
+        evalPdf: 'evaluations/Calcul algébrique - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Calcul algébrique - Correction.pdf',
         contenu: {
           lead: 'Calcul sur les expressions algébriques, les puissances et les racines carrées.',
           items: [
@@ -2256,6 +2283,9 @@ h1.hero-title{
         commentaires: '<ul><li>La racine carrée est définie en 4e avec le théorème de Pythagore puis reprise en 3e dans le cadre de la résolution des équations du type x²=a. Aucune technicité de calculs n\'est travaillée au collège.</li><li>Les trois identités remarquables auront été vues en classe de 3e dans le nouveau programme de collège.</li></ul><p>(a+b)² et (a−b)² sont à travailler en classe de seconde (dans « les deux sens »).</p>'
       },
       'seq4': {
+        coursPdf: 'cours/Équations et inéquations.pdf',
+        evalPdf: 'evaluations/Équations et inéquations - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Équations et inéquations - Correction.pdf',
         contenu: {
           lead: 'Équations et inéquations du premier degré, équations produit et quotient.',
           items: [
@@ -2277,6 +2307,9 @@ h1.hero-title{
         commentaires: '<p>Les résolutions des équations ax+b=0, A(x)B(x)=0 et x²=a sont à voir en lien avec les fonctions. Un travail est à mener sur les ensembles de solutions et les ensembles de définition.</p>'
       },
       'seq5': {
+        coursPdf: 'cours/Vecteurs (Partie 1).pdf',
+        evalPdf: 'evaluations/Vecteurs (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Vecteurs (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Vecteurs : égalité, produit par un réel et colinéarité.',
           items: [
@@ -2296,6 +2329,9 @@ h1.hero-title{
         }
       },
       'seq6': {
+        coursPdf: 'cours/Arithmétique.pdf',
+        evalPdf: 'evaluations/Arithmétique - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Arithmétique - Correction.pdf',
         contenu: {
           lead: 'Multiples, diviseurs et parité dans ℕ et ℤ.',
           items: [
@@ -2317,6 +2353,9 @@ h1.hero-title{
         commentaires: '<p>La définition d\'un multiple est explicitée.</p><p>Les élèves auront moins fait d\'arithmétique au collège (pas de nombre premier dans le nouveau programme de cycle 4).</p>'
       },
       'seq7': {
+        coursPdf: 'cours/Signe d\'une fonction.pdf',
+        evalPdf: 'evaluations/Signe d\'une fonction - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Signe d\'une fonction - Correction.pdf',
         contenu: {
           lead: 'Signe d\'une fonction affine, d\'un produit ou d\'un quotient.',
           items: [
@@ -2334,6 +2373,9 @@ h1.hero-title{
         }
       },
       'seq8': {
+        coursPdf: 'cours/Vecteurs et coordonnées (Partie 1).pdf',
+        evalPdf: 'evaluations/Vecteurs et coordonnées (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Vecteurs et coordonnées (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Coordonnées d\'un vecteur dans une base orthonormée.',
           items: [
@@ -2352,6 +2394,9 @@ h1.hero-title{
         }
       },
       'seq9': {
+        coursPdf: 'cours/Fonctions de référence.pdf',
+        evalPdf: 'evaluations/Fonctions de référence - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Fonctions de référence - Correction.pdf',
         contenu: {
           lead: 'Fonctions de référence : valeur absolue, carré, inverse.',
           items: [
@@ -2371,6 +2416,9 @@ h1.hero-title{
         ]
       },
       'seq10': {
+        coursPdf: 'cours/Statistiques (Partie 1).pdf',
+        evalPdf: 'evaluations/Statistiques (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Statistiques (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Pourcentages, évolutions et indicateurs de dispersion.',
           items: [
@@ -2392,6 +2440,9 @@ h1.hero-title{
         }
       },
       'seq11': {
+        coursPdf: 'cours/Vecteurs et coordonnées (Partie 2).pdf',
+        evalPdf: 'evaluations/Vecteurs et coordonnées (Partie 2) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Vecteurs et coordonnées (Partie 2) - Correction.pdf',
         contenu: {
           lead: 'Déterminant de deux vecteurs et critère de colinéarité.',
           items: [
@@ -2410,6 +2461,9 @@ h1.hero-title{
         ]
       },
       'seq12': {
+        coursPdf: 'cours/Variations d\'une fonction (Partie 1).pdf',
+        evalPdf: 'evaluations/Variations d\'une fonction (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Variations d\'une fonction (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Sens de variation d\'une fonction et tableau de variations.',
           items: [
@@ -2428,6 +2482,9 @@ h1.hero-title{
         }
       },
       'seq13': {
+        coursPdf: 'cours/Probabilités (Partie 1).pdf',
+        evalPdf: 'evaluations/Probabilités (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Probabilités (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Probabilité conditionnelle et arbres pondérés.',
           items: [
@@ -2445,6 +2502,9 @@ h1.hero-title{
         }
       },
       'seq14': {
+        coursPdf: 'cours/Droites du plan (Partie 1).pdf',
+        evalPdf: 'evaluations/Droites du plan (Partie 1) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Droites du plan (Partie 1) - Correction.pdf',
         contenu: {
           lead: 'Équation de droite, vecteur directeur et pente.',
           items: [
@@ -2469,6 +2529,9 @@ h1.hero-title{
         ]
       },
       'seq15': {
+        coursPdf: 'cours/Droites du plan (Partie 2).pdf',
+        evalPdf: 'evaluations/Droites du plan (Partie 2) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Droites du plan (Partie 2) - Correction.pdf',
         contenu: {
           lead: 'Compléments sur les équations de droites.',
           items: [
@@ -2487,6 +2550,9 @@ h1.hero-title{
         ]
       },
       'seq16': {
+        coursPdf: 'cours/Variations d\'une fonction (Partie 2).pdf',
+        evalPdf: 'evaluations/Variations d\'une fonction (Partie 2) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Variations d\'une fonction (Partie 2) - Correction.pdf',
         contenu: {
           lead: 'Variations des fonctions de référence et des fonctions affines.',
           items: [
@@ -2507,6 +2573,9 @@ h1.hero-title{
         ]
       },
       'seq17': {
+        coursPdf: 'cours/Probabilités (Partie 2).pdf',
+        evalPdf: 'evaluations/Probabilités (Partie 2) - Evaluation.pdf',
+        evalCorrectionPdf: 'evaluations/Probabilités (Partie 2) - Correction.pdf',
         contenu: {
           lead: 'Loi des grands nombres et probabilités conditionnelles.',
           items: [
@@ -2673,7 +2742,9 @@ h1.hero-title{
               { title:'Corrigés', type:'Correction détaillée', href:'#' },
             ]) },
           { key:'evaluations', label:'Évaluations', icon:icoCheck, color:tints.cyan,
-            render: () => renderDocs('Évaluations', [
+            render: () => (override && override.evalPdf && override.evalCorrectionPdf)
+              ? renderDualPdfViewer(override.evalPdf, 'Évaluation', override.evalCorrectionPdf, 'Corrigé', override.evalLatex, override.evalCorrectionLatex)
+              : renderDocs('Évaluations', [
               { title:'Évaluation', type:'Contrôle de connaissances', href:'#' },
               { title:'Corrigé de l\'évaluation', type:'Barème et correction', href:'#' },
             ]) },
@@ -2758,6 +2829,36 @@ h1.hero-title{
             </span>
           </div>
           <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+        </div>
+      `;
+    }
+
+    function renderDualPdfViewer(pdfA, labelA, pdfB, labelB, latexA, latexB){
+      function block(pdfPath, label, latexUrl){
+        return `
+          <div class="pdf-viewer pdf-viewer-stacked">
+            <div class="pdf-viewer-bar">
+              <span class="pdf-viewer-name">${label}</span>
+              <span class="pdf-viewer-actions">
+                ${latexUrl ? `
+                <a class="pdf-viewer-latex" href="${latexUrl}" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7L4 12l5 5M15 7l5 5-5 5"/></svg>
+                  LaTeX
+                </a>` : ''}
+                <a class="pdf-viewer-download" href="${pdfPath}" download>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M4 19h16"/></svg>
+                  Télécharger
+                </a>
+              </span>
+            </div>
+            <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+          </div>
+        `;
+      }
+      return `
+        <div class="pdf-viewer-dual">
+          ${block(pdfA, labelA, latexA)}
+          ${block(pdfB, labelB, latexB)}
         </div>
       `;
     }
