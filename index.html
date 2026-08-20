@@ -725,6 +725,27 @@ h1.hero-title{
 }
 .res-track::-webkit-scrollbar{ display:none; }
 
+.res-scrollbar{
+  position:relative;
+  height:6px;
+  border-radius:3px;
+  background:rgba(255,255,255,0.08);
+  margin:0 6px 4px;
+  cursor:pointer;
+}
+.res-scrollbar-thumb{
+  position:absolute;
+  top:0; left:0;
+  height:100%;
+  border-radius:3px;
+  background:var(--accent);
+  cursor:grab;
+  transition:background 0.2s;
+}
+.res-scrollbar-thumb:hover,
+.res-scrollbar-thumb.dragging{ background:#3DB4FF; }
+.res-scrollbar-thumb.dragging{ cursor:grabbing; }
+
 .res-card{
   scroll-snap-align:start;
   flex:0 0 auto;
@@ -777,11 +798,13 @@ h1.hero-title{
   display:block;
 }
 .res-app[href*="maths-et-tiques"] .res-app-icon,
-.res-app[href*="coquillagesetpoincare"] .res-app-icon{
+.res-app[href*="coquillagesetpoincare"] .res-app-icon,
+.res-app[href*="maths-au-quotidien"] .res-app-icon{
   background:#fff;
 }
 .res-app[href*="maths-et-tiques"] .res-app-icon img,
-.res-app[href*="coquillagesetpoincare"] .res-app-icon img{
+.res-app[href*="coquillagesetpoincare"] .res-app-icon img,
+.res-app[href*="maths-au-quotidien"] .res-app-icon img{
   object-fit:contain;
   padding:6px;
   width:100%; height:100%;
@@ -2068,6 +2091,10 @@ h1.hero-title{
       </div>
 
     </div>
+
+      <div class="res-scrollbar" id="res-scrollbar">
+        <div class="res-scrollbar-thumb" id="res-scrollbar-thumb"></div>
+      </div>
     </div>
    </div>
   </section>
@@ -2199,27 +2226,27 @@ h1.hero-title{
   document.getElementById('seq-next').addEventListener('click', () => track.scrollBy({ left: cardWidth(), behavior: 'smooth' }));
   document.getElementById('seq-prev').addEventListener('click', () => track.scrollBy({ left: -cardWidth(), behavior: 'smooth' }));
 
-  // Barre de défilement personnalisée sous le carrousel des séquences
-  (function(){
-    const bar = document.getElementById('seq-scrollbar');
-    const thumb = document.getElementById('seq-scrollbar-thumb');
+  // Barre de défilement personnalisée sous un carrousel
+  function initCarouselScrollbar(trackEl, barId, thumbId){
+    const bar = document.getElementById(barId);
+    const thumb = document.getElementById(thumbId);
     if (!bar || !thumb) return;
 
     function updateThumb(){
-      const trackWidth = track.scrollWidth;
-      const visibleWidth = track.clientWidth;
+      const trackWidth = trackEl.scrollWidth;
+      const visibleWidth = trackEl.clientWidth;
       const barWidth = bar.clientWidth;
       if (trackWidth <= visibleWidth){ bar.style.display = 'none'; return; }
       bar.style.display = 'block';
       const thumbWidth = Math.max(40, (visibleWidth / trackWidth) * barWidth);
       const maxThumbLeft = barWidth - thumbWidth;
       const maxScroll = trackWidth - visibleWidth;
-      const ratio = maxScroll > 0 ? track.scrollLeft / maxScroll : 0;
+      const ratio = maxScroll > 0 ? trackEl.scrollLeft / maxScroll : 0;
       thumb.style.width = thumbWidth + 'px';
       thumb.style.left = (ratio * maxThumbLeft) + 'px';
     }
 
-    track.addEventListener('scroll', updateThumb);
+    trackEl.addEventListener('scroll', updateThumb);
     window.addEventListener('resize', updateThumb);
     updateThumb();
 
@@ -2229,9 +2256,9 @@ h1.hero-title{
       const barWidth = bar.clientWidth;
       const thumbWidth = thumb.offsetWidth;
       const maxThumbLeft = barWidth - thumbWidth;
-      const maxScroll = track.scrollWidth - track.clientWidth;
+      const maxScroll = trackEl.scrollWidth - trackEl.clientWidth;
       const ratio = maxThumbLeft > 0 ? thumbLeft / maxThumbLeft : 0;
-      track.scrollLeft = ratio * maxScroll;
+      trackEl.scrollLeft = ratio * maxScroll;
     }
 
     thumb.addEventListener('mousedown', (e) => {
@@ -2277,12 +2304,15 @@ h1.hero-title{
       scrollFromThumbLeft(newLeft);
     }, { passive:true });
     window.addEventListener('touchend', () => { dragging = false; });
-  })();
+  }
+
+  initCarouselScrollbar(track, 'seq-scrollbar', 'seq-scrollbar-thumb');
 
   const resTrack = document.getElementById('res-track');
   const resCardWidth = () => resTrack.querySelector('.res-card').getBoundingClientRect().width + 20;
   document.getElementById('res-next').addEventListener('click', () => resTrack.scrollBy({ left: resCardWidth(), behavior: 'smooth' }));
   document.getElementById('res-prev').addEventListener('click', () => resTrack.scrollBy({ left: -resCardWidth(), behavior: 'smooth' }));
+  initCarouselScrollbar(resTrack, 'res-scrollbar', 'res-scrollbar-thumb');
 
   // Modale "fiche de chapitre" — vue maître-détail façon app iPad
   (function () {
