@@ -1373,6 +1373,31 @@ h1.hero-title{
   position:relative;
   display:inline-block;
 }
+/* Halo lumineux façon arc-en-ciel derrière les cartes légendaires, aux couleurs de leur bordure */
+.tcg-zoom-halo{
+  position:absolute;
+  top:50%; left:50%;
+  width:120%; height:120%;
+  transform:translate(-50%,-50%) scale(0.9);
+  border-radius:24px;
+  pointer-events:none;
+  z-index:1;
+  opacity:0;
+  filter:blur(38px);
+  background:conic-gradient(from 0deg,
+    #2b8fe0, #34c78f, #ffd23c, #ff7a3c, #ff3c5c, #b23cff, #2b8fe0);
+  transition:opacity 0.5s ease;
+}
+.tcg-zoom-halo.is-legendary{
+  opacity:1;
+  filter:blur(46px);
+  transform:translate(-50%,-50%) scale(1.04);
+  animation:legendHaloAppear 0.9s cubic-bezier(.2,.8,.3,1) forwards;
+}
+@keyframes legendHaloAppear{
+  0%{ transform:translate(-50%,-50%) scale(0.75); opacity:0; filter:blur(18px); }
+  100%{ transform:translate(-50%,-50%) scale(1.04); opacity:1; filter:blur(46px); }
+}
 #tcg-zoom-img{
   display:block;
   height:auto;
@@ -2180,6 +2205,7 @@ h1.hero-title{
 
 <div id="tcg-zoom-overlay" aria-hidden="true">
   <div class="tcg-zoom-stage" id="tcg-zoom-stage">
+    <div class="tcg-zoom-halo" id="tcg-zoom-halo"></div>
     <img id="tcg-zoom-img" src="" alt="">
     <div class="tcg-zoom-shine" id="tcg-zoom-shine"></div>
   </div>
@@ -3654,6 +3680,7 @@ h1.hero-title{
     const zoomStage = document.getElementById('tcg-zoom-stage');
     const zoomImg = document.getElementById('tcg-zoom-img');
     const zoomShine = document.getElementById('tcg-zoom-shine');
+    const zoomHalo = document.getElementById('tcg-zoom-halo');
 
     cardsGrid.addEventListener('click', (e) => {
       const cardEl = e.target.closest('.tcg-card');
@@ -3669,11 +3696,14 @@ h1.hero-title{
       // Relance l'effet de brillance à chaque ouverture d'une carte légendaire
       zoomShine.classList.remove('is-legendary');
       zoomShine.style.display = 'none';
+      zoomHalo.classList.remove('is-legendary');
       if (isLegendary){
         // force reflow pour pouvoir rejouer l'animation CSS
         zoomShine.style.display = '';
         void zoomShine.offsetWidth;
         zoomShine.classList.add('is-legendary');
+        void zoomHalo.offsetWidth;
+        zoomHalo.classList.add('is-legendary');
       }
     });
 
@@ -3690,6 +3720,7 @@ h1.hero-title{
       zoomImg.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
       zoomShine.classList.remove('is-legendary');
       zoomShine.style.display = 'none';
+      zoomHalo.classList.remove('is-legendary');
     }
 
     zoomOverlay.addEventListener('click', closeZoom);
