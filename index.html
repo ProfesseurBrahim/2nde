@@ -1366,11 +1366,31 @@ h1.hero-title{
   pointer-events:none;
   transition:opacity 0.25s;
   cursor:zoom-out;
+  overflow:hidden;
 }
 #tcg-zoom-overlay.is-open{ opacity:1; pointer-events:auto; }
+
+/* Fond plein écran flouté et coloré pour les cartes épiques */
+.tcg-zoom-bg-glow{
+  position:absolute;
+  inset:0;
+  z-index:0;
+  pointer-events:none;
+  opacity:0;
+  filter:blur(120px) saturate(1.1);
+  background:
+    radial-gradient(ellipse 55% 45% at 12% 15%, rgba(43,143,224,0.5), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 88% 15%, rgba(52,199,143,0.5), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 12% 85%, rgba(255,210,60,0.45), transparent 60%),
+    radial-gradient(ellipse 55% 45% at 88% 85%, rgba(178,60,255,0.45), transparent 60%),
+    radial-gradient(ellipse 60% 30% at 50% 100%, rgba(255,60,92,0.4), transparent 65%);
+  transition:opacity 0.6s ease;
+}
+.tcg-zoom-bg-glow.is-epique{ opacity:0.5; }
 .tcg-zoom-stage{
   perspective:1400px;
   position:relative;
+  z-index:1;
   display:inline-block;
 }
 /* Halo lumineux façon arc-en-ciel derrière les cartes légendaires, aux couleurs de leur bordure */
@@ -1398,23 +1418,29 @@ h1.hero-title{
   0%{ transform:translate(-50%,-50%) scale(0.75); opacity:0; filter:blur(18px); }
   100%{ transform:translate(-50%,-50%) scale(1.04); opacity:1; filter:blur(46px); }
 }
+.tcg-zoom-crop{
+  display:inline-block;
+  overflow:hidden;
+  border-radius:18px;
+  box-shadow:0 40px 90px rgba(0,0,0,0.6);
+  position:relative;
+  z-index:2;
+  transform:scale(1);
+  opacity:0;
+  transition:transform 0.3s cubic-bezier(.2,.9,.25,1), opacity 0.3s;
+  will-change:transform;
+}
+#tcg-zoom-overlay.is-open .tcg-zoom-crop{ opacity:1; }
 #tcg-zoom-img{
   display:block;
   height:auto;
   width:auto;
   max-width:min(80vw, 460px);
   max-height:90vh;
-  border-radius:18px;
-  box-shadow:0 40px 90px rgba(0,0,0,0.6);
-  transform:scale(1);
-  opacity:0;
-  transition:transform 0.3s cubic-bezier(.2,.9,.25,1), opacity 0.3s;
-  will-change:transform;
+  transform:scale(1.035);
   cursor:default;
   position:relative;
-  z-index:2;
 }
-#tcg-zoom-overlay.is-open #tcg-zoom-img{ opacity:1; transform:scale(1) rotateX(0deg) rotateY(0deg); }
 @media (max-width:640px){
   #tcg-zoom-img{ max-width:90vw; }
 }
@@ -2207,9 +2233,12 @@ h1.hero-title{
 </div>
 
 <div id="tcg-zoom-overlay" aria-hidden="true">
+  <div class="tcg-zoom-bg-glow" id="tcg-zoom-bg-glow"></div>
   <div class="tcg-zoom-stage" id="tcg-zoom-stage">
     <div class="tcg-zoom-halo" id="tcg-zoom-halo"></div>
-    <img id="tcg-zoom-img" src="" alt="">
+    <div class="tcg-zoom-crop">
+      <img id="tcg-zoom-img" src="" alt="">
+    </div>
     <div class="tcg-zoom-shine" id="tcg-zoom-shine"></div>
   </div>
 </div>
@@ -3686,8 +3715,10 @@ h1.hero-title{
     const zoomOverlay = document.getElementById('tcg-zoom-overlay');
     const zoomStage = document.getElementById('tcg-zoom-stage');
     const zoomImg = document.getElementById('tcg-zoom-img');
+    const zoomCrop = document.querySelector('.tcg-zoom-crop');
     const zoomShine = document.getElementById('tcg-zoom-shine');
     const zoomHalo = document.getElementById('tcg-zoom-halo');
+    const zoomBgGlow = document.getElementById('tcg-zoom-bg-glow');
 
     cardsGrid.addEventListener('click', (e) => {
       const cardEl = e.target.closest('.tcg-card');
@@ -3695,8 +3726,9 @@ h1.hero-title{
       const imgSrc = cardEl.getAttribute('data-zoom-img');
       if (!imgSrc) return;
       const isLegendary = cardEl.classList.contains('rarity-legendaire');
+      const isEpique = cardEl.classList.contains('rarity-epique');
       zoomImg.src = imgSrc;
-      zoomImg.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+      zoomCrop.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
       zoomOverlay.classList.add('is-open');
       zoomOverlay.setAttribute('aria-hidden', 'false');
 
@@ -3704,6 +3736,7 @@ h1.hero-title{
       zoomShine.classList.remove('is-legendary');
       zoomShine.style.display = 'none';
       zoomHalo.classList.remove('is-legendary');
+      zoomBgGlow.classList.remove('is-epique');
       if (isLegendary){
         // force reflow pour pouvoir rejouer l'animation CSS
         zoomShine.style.display = '';
@@ -3711,6 +3744,10 @@ h1.hero-title{
         zoomShine.classList.add('is-legendary');
         void zoomHalo.offsetWidth;
         zoomHalo.classList.add('is-legendary');
+      }
+      if (isEpique){
+        void zoomBgGlow.offsetWidth;
+        zoomBgGlow.classList.add('is-epique');
       }
     });
 
@@ -3724,10 +3761,11 @@ h1.hero-title{
     function closeZoom(){
       zoomOverlay.classList.remove('is-open');
       zoomOverlay.setAttribute('aria-hidden', 'true');
-      zoomImg.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+      zoomCrop.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
       zoomShine.classList.remove('is-legendary');
       zoomShine.style.display = 'none';
       zoomHalo.classList.remove('is-legendary');
+      zoomBgGlow.classList.remove('is-epique');
     }
 
     zoomOverlay.addEventListener('click', closeZoom);
@@ -3736,15 +3774,15 @@ h1.hero-title{
     });
 
     zoomStage.addEventListener('mousemove', (e) => {
-      const rect = zoomImg.getBoundingClientRect();
+      const rect = zoomCrop.getBoundingClientRect();
       const px = (e.clientX - rect.left) / rect.width;
       const py = (e.clientY - rect.top) / rect.height;
       const rotateY = (px - 0.5) * 22;
       const rotateX = (0.5 - py) * 22;
-      zoomImg.style.transform = `scale(1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+      zoomCrop.style.transform = `scale(1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
     });
     zoomStage.addEventListener('mouseleave', () => {
-      zoomImg.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
+      zoomCrop.style.transform = 'scale(1) rotateX(0deg) rotateY(0deg)';
     });
     zoomImg.addEventListener('click', (e) => e.stopPropagation());
   })();
