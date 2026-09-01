@@ -1537,6 +1537,40 @@ h1.hero-title{
   background:#fff;
 }
 
+/* Placeholder affiché quand un document n'est pas encore mis en ligne (évite le 404) */
+.pdf-viewer-placeholder{
+  display:none;
+  flex:1;
+  min-height:0;
+  position:relative;
+  background:#0b0c10;
+  overflow:hidden;
+}
+.pdf-viewer.is-missing iframe{ display:none; }
+.pdf-viewer.is-missing .pdf-viewer-placeholder{ display:flex; }
+.pdf-viewer.is-missing .pdf-viewer-download,
+.pdf-viewer.is-missing .pdf-viewer-latex{ display:none; }
+.pdf-viewer-placeholder img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+.pdf-viewer-placeholder span{
+  position:absolute;
+  left:50%;
+  bottom:14px;
+  transform:translateX(-50%);
+  font-size:0.8rem;
+  font-weight:700;
+  color:#fff;
+  background:rgba(0,0,0,0.55);
+  padding:6px 14px;
+  border-radius:999px;
+  backdrop-filter:blur(4px);
+  white-space:nowrap;
+}
+
 /* Double lecteur PDF (Évaluation + Corrigé), avec défilement vertical global */
 .chapter-content:has(.pdf-viewer-dual){
   padding-top:14px;
@@ -3297,7 +3331,7 @@ h1.hero-title{
     function renderPdfViewer(heading, pdfPath, fileName, latexUrl) {
       const label = fileName || pdfPath.split('/').pop();
       return `
-        <div class="pdf-viewer">
+        <div class="pdf-viewer" data-pdf="${pdfPath}">
           <div class="pdf-viewer-bar">
             <span class="pdf-viewer-name">${label}</span>
             <span class="pdf-viewer-actions">
@@ -3313,6 +3347,10 @@ h1.hero-title{
             </span>
           </div>
           <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+          <div class="pdf-viewer-placeholder">
+            <img class="pdf-placeholder-gif" alt="" loading="lazy">
+            <span>Document bientôt disponible</span>
+          </div>
         </div>
       `;
     }
@@ -3320,7 +3358,7 @@ h1.hero-title{
     function renderActivitiesGrid(activities){
       function block(pdfPath, label, latexUrl){
         return `
-          <div class="pdf-viewer pdf-viewer-stacked">
+          <div class="pdf-viewer pdf-viewer-stacked" data-pdf="${pdfPath}">
             <div class="pdf-viewer-bar">
               <span class="pdf-viewer-name">${label}</span>
               <span class="pdf-viewer-actions">
@@ -3336,6 +3374,10 @@ h1.hero-title{
               </span>
             </div>
             <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+            <div class="pdf-viewer-placeholder">
+              <img class="pdf-placeholder-gif" alt="" loading="lazy">
+              <span>Document bientôt disponible</span>
+            </div>
           </div>
         `;
       }
@@ -3349,7 +3391,7 @@ h1.hero-title{
     function renderDualPdfViewer(pdfA, labelA, pdfB, labelB, latexA, latexB){
       function block(pdfPath, label, latexUrl){
         return `
-          <div class="pdf-viewer pdf-viewer-stacked">
+          <div class="pdf-viewer pdf-viewer-stacked" data-pdf="${pdfPath}">
             <div class="pdf-viewer-bar">
               <span class="pdf-viewer-name">${label}</span>
               <span class="pdf-viewer-actions">
@@ -3365,6 +3407,10 @@ h1.hero-title{
               </span>
             </div>
             <iframe src="${pdfPath}" title="${label}" loading="lazy"></iframe>
+            <div class="pdf-viewer-placeholder">
+              <img class="pdf-placeholder-gif" alt="" loading="lazy">
+              <span>Document bientôt disponible</span>
+            </div>
           </div>
         `;
       }
@@ -3437,11 +3483,29 @@ h1.hero-title{
         sidebar.appendChild(groupEl);
       });
 
-      function selectItem(item, btn) {
+    const placeholderGifs = ['images/Satisfying.gif', 'images/Satisfying2.gif', 'images/Satisfying3.gif'];
+    function checkPdfPlaceholders(container) {
+      container.querySelectorAll('.pdf-viewer[data-pdf]').forEach(viewer => {
+        const url = viewer.getAttribute('data-pdf');
+        if (!url) return;
+        const img = viewer.querySelector('.pdf-placeholder-gif');
+        if (img && !img.getAttribute('src')) {
+          img.src = placeholderGifs[Math.floor(Math.random() * placeholderGifs.length)];
+        }
+        fetch(url, { method: 'HEAD' })
+          .then(res => {
+            if (!res.ok) viewer.classList.add('is-missing');
+          })
+          .catch(() => viewer.classList.add('is-missing'));
+      });
+    }
+
+    function selectItem(item, btn) {
         sidebar.querySelectorAll('.chapter-nav-item').forEach(b => b.classList.remove('is-active'));
         btn.classList.add('is-active');
         content.innerHTML = item.render();
         content.scrollTop = 0;
+        checkPdfPlaceholders(content);
       }
 
       if (firstItem) selectItem(firstItem.item, firstItem.btn);
