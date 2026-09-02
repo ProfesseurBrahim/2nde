@@ -284,6 +284,73 @@ body::before{
   #floating-toolbar .nav-btn{ width:30px; height:30px; font-size:0.8rem; }
 }
 
+/* ============================================================
+   PANNEAU DE PROGRESSION DES DOCUMENTS
+   ============================================================ */
+#docs-progress-overlay{
+  position:fixed; inset:0;
+  z-index:2000;
+  display:none;
+  align-items:center; justify-content:center;
+  background:rgba(4,8,16,0.6);
+  backdrop-filter:blur(6px);
+  padding:20px;
+}
+#docs-progress-overlay.is-open{ display:flex; }
+#docs-progress-panel{
+  width:100%; max-width:440px;
+  max-height:80vh;
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  background:var(--bg-panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius-md);
+  box-shadow:0 20px 60px rgba(0,0,0,0.5);
+}
+.docs-progress-head{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 18px;
+  border-bottom:1px solid var(--line);
+  flex-shrink:0;
+}
+.docs-progress-head h3{ margin:0; font-size:0.98rem; font-weight:800; color:var(--white); }
+#docs-progress-close{
+  width:28px; height:28px; border-radius:8px;
+  background:rgba(0,163,255,0.10); border:1px solid transparent;
+  color:var(--white); cursor:pointer; font-size:0.8rem;
+  display:flex; align-items:center; justify-content:center;
+  transition:background 0.2s, border-color 0.2s;
+}
+#docs-progress-close:hover{ background:rgba(0,163,255,0.22); border-color:var(--accent); }
+.docs-progress-body{ padding:16px 18px 18px; overflow-y:auto; }
+.docs-progress-loading{ font-size:0.82rem; color:var(--grey); padding:10px 2px; }
+.docs-progress-list{ display:flex; flex-direction:column; gap:14px; }
+.docs-progress-row{ display:flex; flex-direction:column; gap:6px; }
+.docs-progress-row-top{
+  display:flex; align-items:baseline; justify-content:space-between;
+  gap:10px;
+}
+.docs-progress-row-label{ font-size:0.85rem; font-weight:700; color:var(--white); }
+.docs-progress-row-count{ font-size:0.72rem; color:var(--grey-dim); font-weight:600; white-space:nowrap; }
+.docs-progress-row-pct{ font-size:0.78rem; font-weight:800; color:var(--accent); }
+.docs-progress-bar{
+  width:100%; height:8px; border-radius:5px;
+  background:rgba(255,255,255,0.06);
+  overflow:hidden;
+}
+.docs-progress-bar-fill{
+  height:100%; border-radius:5px;
+  background:linear-gradient(90deg, var(--accent), #6FE3FF);
+  width:0%;
+  transition:width 0.6s cubic-bezier(0.4,0,0.2,1);
+}
+.docs-progress-total{
+  margin-top:6px;
+  padding-top:14px;
+  border-top:1px solid var(--line);
+}
+.docs-progress-total .docs-progress-row-label{ color:var(--accent); }
+
 /* Bouton contact + panneau d'icônes */
 #contact-wrap{
   position:relative;
@@ -1790,7 +1857,21 @@ h1.hero-title{
       </a>
     </div>
   </div>
+  <button id="docs-progress-button" class="nav-btn" title="Progression des documents">%</button>
   <button id="scrolltop-button" class="nav-btn" title="Haut de page">↑</button>
+</div>
+
+<div id="docs-progress-overlay">
+  <div id="docs-progress-panel">
+    <div class="docs-progress-head">
+      <h3>Progression des documents</h3>
+      <button id="docs-progress-close" aria-label="Fermer">✕</button>
+    </div>
+    <div class="docs-progress-body" id="docs-progress-body">
+      <div class="docs-progress-loading" id="docs-progress-loading">Vérification des documents en cours…</div>
+      <div class="docs-progress-list" id="docs-progress-list"></div>
+    </div>
+  </div>
 </div>
 
 <main id="top">
@@ -3453,6 +3534,138 @@ h1.hero-title{
       `;
     }
 
+    /* ============================================================
+       PROGRESSION DES DOCUMENTS — panneau en pourcentage
+       ============================================================ */
+    function collectDocsByCategory() {
+      const categories = {
+        cours:        { label: 'Cours',        urls: [] },
+        activites:    { label: 'Activités',    urls: [] },
+        exercices:    { label: 'Exercices',    urls: [] },
+        evaluations:  { label: 'Évaluations',  urls: [] },
+        corrections:  { label: 'Corrections',  urls: [] }
+      };
+      Object.keys(chapterOverrides).forEach(key => {
+        const ov = chapterOverrides[key];
+        if (!ov) return;
+        if (ov.coursPdf) categories.cours.urls.push(ov.coursPdf);
+        if (Array.isArray(ov.activites)) {
+          ov.activites.forEach(a => { if (a && a.pdf) categories.activites.urls.push(a.pdf); });
+        }
+        if (ov.exercicePdf) categories.exercices.urls.push(ov.exercicePdf);
+        if (ov.evalPdf) categories.evaluations.urls.push(ov.evalPdf);
+        if (ov.exerciceCorrectionPdf) categories.corrections.urls.push(ov.exerciceCorrectionPdf);
+        if (ov.evalCorrectionPdf) categories.corrections.urls.push(ov.evalCorrectionPdf);
+      });
+      return categories;
+    }
+
+    function checkUrlExists(url) {
+      return fetch(url, { method: 'HEAD' })
+        .then(res => !!res.ok)
+        .catch(() => false);
+    }
+
+    let docsProgressCache = null;
+
+    function renderDocsProgressRow(catKey, cat, present, total) {
+      const pct = total > 0 ? Math.round((present / total) * 100) : 0;
+      return `
+        <div class="docs-progress-row" data-cat="${catKey}">
+          <div class="docs-progress-row-top">
+            <span class="docs-progress-row-label">${cat.label}</span>
+            <span class="docs-progress-row-pct">${pct}%</span>
+          </div>
+          <div class="docs-progress-bar"><div class="docs-progress-bar-fill" style="width:${pct}%"></div></div>
+          <div class="docs-progress-row-count">${present} / ${total} document${total > 1 ? 's' : ''} mis en ligne</div>
+        </div>
+      `;
+    }
+
+    function computeAndRenderDocsProgress(force) {
+      const loadingEl = document.getElementById('docs-progress-loading');
+      const listEl = document.getElementById('docs-progress-list');
+      if (!loadingEl || !listEl) return;
+
+      if (docsProgressCache && !force) {
+        renderDocsProgressFromCache();
+        return;
+      }
+
+      loadingEl.style.display = 'block';
+      listEl.style.display = 'none';
+      listEl.innerHTML = '';
+
+      const categories = collectDocsByCategory();
+      const catKeys = Object.keys(categories);
+
+      const checks = catKeys.map(catKey => {
+        const urls = categories[catKey].urls;
+        return Promise.all(urls.map(checkUrlExists)).then(results => {
+          const present = results.filter(Boolean).length;
+          return { catKey, present, total: urls.length };
+        });
+      });
+
+      Promise.all(checks).then(resultsArr => {
+        docsProgressCache = { categories, resultsArr };
+        renderDocsProgressFromCache();
+      });
+
+      function renderDocsProgressFromCache() {
+        const { categories, resultsArr } = docsProgressCache;
+        let html = '';
+        let totalPresent = 0;
+        let totalAll = 0;
+        resultsArr.forEach(({ catKey, present, total }) => {
+          html += renderDocsProgressRow(catKey, categories[catKey], present, total);
+          totalPresent += present;
+          totalAll += total;
+        });
+        const totalPct = totalAll > 0 ? Math.round((totalPresent / totalAll) * 100) : 0;
+        html += `
+          <div class="docs-progress-row docs-progress-total">
+            <div class="docs-progress-row-top">
+              <span class="docs-progress-row-label">Total</span>
+              <span class="docs-progress-row-pct">${totalPct}%</span>
+            </div>
+            <div class="docs-progress-bar"><div class="docs-progress-bar-fill" style="width:${totalPct}%"></div></div>
+            <div class="docs-progress-row-count">${totalPresent} / ${totalAll} documents mis en ligne</div>
+          </div>
+        `;
+        loadingEl.style.display = 'none';
+        listEl.style.display = 'flex';
+        listEl.innerHTML = html;
+      }
+    }
+
+    function openDocsProgress() {
+      const overlay = document.getElementById('docs-progress-overlay');
+      if (!overlay) return;
+      overlay.classList.add('is-open');
+      computeAndRenderDocsProgress(false);
+    }
+
+    function closeDocsProgress() {
+      const overlay = document.getElementById('docs-progress-overlay');
+      if (!overlay) return;
+      overlay.classList.remove('is-open');
+    }
+
+    const docsProgressButton = document.getElementById('docs-progress-button');
+    const docsProgressOverlay = document.getElementById('docs-progress-overlay');
+    const docsProgressCloseBtn = document.getElementById('docs-progress-close');
+    if (docsProgressButton) docsProgressButton.addEventListener('click', openDocsProgress);
+    if (docsProgressCloseBtn) docsProgressCloseBtn.addEventListener('click', closeDocsProgress);
+    if (docsProgressOverlay) {
+      docsProgressOverlay.addEventListener('click', (e) => {
+        if (e.target === docsProgressOverlay) closeDocsProgress();
+      });
+    }
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeDocsProgress();
+    });
+
     function openChapter(card) {
       const n = card.querySelector('.seq-tag .n')?.textContent.trim() || '';
       const cat = card.querySelector('.seq-tag')?.lastChild?.textContent.trim() || '';
@@ -3494,6 +3707,8 @@ h1.hero-title{
       });
 
     const placeholderGifs = ['images/Satisfying.gif', 'images/Satisfying2.gif', 'images/Satisfying3.gif'];
+
+
     function checkPdfPlaceholders(container) {
       container.querySelectorAll('.pdf-viewer[data-pdf]').forEach(viewer => {
         const url = viewer.getAttribute('data-pdf');
